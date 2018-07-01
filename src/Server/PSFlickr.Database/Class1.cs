@@ -4,13 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PSFlickr.Application
+namespace PSFlickr.Database
 {
     public class Class1
     {
-        public void a()
-        {
-            var f = FlickrManager.GetAuthInstance();
-        }
     }
 }
