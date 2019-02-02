@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace PSFlickr.PowershellModule
 {
+    [Cmdlet(VerbsCommon.Set, "Flickr")]
     public class PSFlickr : PSCmdletPT
     {
         public SwitchParameter Authenticate { get; set; }

@@ -30,6 +30,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Description, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Description.1.0.0\lib\Description.dll</HintPath>
+    </Reference>
+    <Reference Include="ProductivityTools.PSCmdlet, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ProductivityTools.PSCmdlet.0.0.6\lib\v4.6.1\ProductivityTools.PSCmdlet.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Management.Automation, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
@@ -46,9 +52,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\ProductivityTools.PSCmdlet\ProductivityTools.PSCmdlet\ProductivityTools.PSCmdlet.csproj">
-      <Project>{ccd8f8dd-0a5e-48ed-a9e1-66d9e07d8919}</Project>
-      <Name>ProductivityTools.PSCmdlet</Name>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ProductivityTools.PSFlickr.ApplicationClient\ProductivityTools.PSFlickr.Application.Client.csproj">
+      <Project>{3eebd62c-e69a-4e8e-92c0-9cd568a12c60}</Project>
+      <Name>ProductivityTools.PSFlickr.Application.Client</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,4 +1,5 @@
 ﻿using ProductivityTools.PSCmdlet;
+using ProductivityTools.PSFlickr.Application.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PSFlickr.PowershellModule.Commands
 {
-    class Authenticate : PSBaseCommandPT<PSFlickr>
+    class Authenticate : PSCommandPT<PSFlickr>
     {
         public Authenticate(PSFlickr cmdletType) : base(cmdletType)
         {
@@ -18,7 +19,10 @@ namespace PSFlickr.PowershellModule.Commands
 
         protected override void Invoke()
         {
-            throw new NotImplementedException();
+            FlickrAutentication autentication = new FlickrAutentication();
+            autentication.OpenAutorizeAddress();
+            string s = "";
+            autentication.GetAccessToken(s);
         }
     }
 }
