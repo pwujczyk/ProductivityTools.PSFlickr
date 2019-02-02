@@ -21,6 +21,7 @@ namespace PSFlickr.DatabaseScripts.Tests
 
             DBTools dBTools = new DBTools();
             Assert.IsTrue(dBTools.CheckDataBaseExistance());
+            dBTools.DropDatabase();
         }
     }
 }
