@@ -65,9 +65,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\PSFlickr.Configuration\PSFlickr.Configuration.csproj">
+    <ProjectReference Include="..\..\Common\ProductivityTools.PSFlickr.Configuration\ProductivityTools.PSFlickr.Configuration.csproj">
       <Project>{6a242000-e8b8-467a-82b1-005b6c77c4ca}</Project>
-      <Name>PSFlickr.Configuration</Name>
+      <Name>ProductivityTools.PSFlickr.Configuration</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

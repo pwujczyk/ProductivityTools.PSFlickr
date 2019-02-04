@@ -6,22 +6,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProductivityTools.PSFlickr.PowershellModule
+namespace ProductivityTools.PSFlickr.PowershellModule.Commands
 {
-    class Authenticate : PSCommandPT<PSFlickr>
+    class GetAlbums : PSCommandPT<PSFlickr>
     {
-        public Authenticate(PSFlickr cmdletType) : base(cmdletType)
-        {
+        protected override bool Condition => base.Cmdlet.done.IsPresent;
 
-        }
-
-        protected override bool Condition => this.Cmdlet.RegisterApplication.IsPresent;
-
+        public GetAlbums(PSFlickr flicr) : base(flicr) { }
         protected override void Invoke()
         {
             FlickrAutentication autentication = new FlickrAutentication();
-            autentication.OpenAutorizeAddress();
+            autentication.BuildPhotoTree();
 
+            autentication.CreateAlbum();
         }
     }
 }

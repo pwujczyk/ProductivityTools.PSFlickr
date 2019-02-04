@@ -17,6 +17,11 @@ namespace ProductivityTools.PSFlickr.Application.Common
             return new Flickr(ApiKey, SharedSecret);
         }
 
+        public static Flickr GetInstanceAutenticated(string token)
+        {
+            return new Flickr(ApiKey, SharedSecret, token);
+        }
+
         //public static Flickr GetAuthInstance()
         //{
         //    var f = new Flickr(ApiKey, SharedSecret);

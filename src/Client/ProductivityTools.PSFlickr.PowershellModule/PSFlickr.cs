@@ -1,5 +1,5 @@
 ﻿using ProductivityTools.PSCmdlet;
-using PSFlickr.PowershellModule.Commands;
+using ProductivityTools.PSFlickr.PowershellModule.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,16 +7,31 @@ using System.Management.Automation;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PSFlickr.PowershellModule
+namespace ProductivityTools.PSFlickr.PowershellModule
 {
     [Cmdlet(VerbsCommon.Set, "Flickr")]
     public class PSFlickr : PSCmdletPT
     {
-        public SwitchParameter Authenticate { get; set; }
+        [Parameter]
+        public SwitchParameter RegisterApplication { get; set; }
 
-        protected PSFlickr()
+        [Parameter]
+        public string Token { get; set; }
+
+        [Parameter]
+        public SwitchParameter done { get; set; }
+
+        public PSFlickr()
         {
             base.AddCommand(new Authenticate(this));
+            base.AddCommand(new SetFlickrToken(this));
+            base.AddCommand(new GetAlbums(this));
+        }
+
+        protected override void BeginProcessing()
+        {
+            base.ProcessCommands();
+            base.BeginProcessing();
         }
     }
 }

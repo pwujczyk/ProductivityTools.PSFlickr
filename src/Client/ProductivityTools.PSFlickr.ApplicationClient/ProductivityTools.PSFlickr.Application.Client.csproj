@@ -50,7 +50,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ProductivityTools.PSFlickr.Application.Common\ProductivityTools.PSFlickr.Application.Common.csproj">
+    <ProjectReference Include="..\..\Common\ProductivityTools.PSFlickr.Application.Common\ProductivityTools.PSFlickr.Application.Common.csproj">
       <Project>{45717545-d58d-4cd0-810e-a4f3c83dc55d}</Project>
       <Name>ProductivityTools.PSFlickr.Application.Common</Name>
     </ProjectReference>
