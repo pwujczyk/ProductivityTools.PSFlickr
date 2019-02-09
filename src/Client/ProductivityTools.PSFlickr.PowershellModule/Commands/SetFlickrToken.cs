@@ -18,7 +18,7 @@ namespace ProductivityTools.PSFlickr.PowershellModule.Commands
         {
             string s = this.Cmdlet.Token;
             FlickrAutentication autentication = new FlickrAutentication();
-            autentication.GetAccessToken(s);
+            autentication.GetAndSaveAccessToken(s);
         }
     }
 }

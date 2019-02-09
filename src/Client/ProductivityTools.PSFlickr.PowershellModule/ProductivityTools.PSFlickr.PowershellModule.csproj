@@ -50,11 +50,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SingleCmdlets\AuthenticateFlickr.cs" />
     <Compile Include="Commands\Authenticate.cs" />
     <Compile Include="Commands\GetAlbums.cs" />
     <Compile Include="Commands\SetFlickrToken.cs" />
     <Compile Include="PSFlickr.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SingleCmdlets\AddFlickrPhoto.cs" />
+    <Compile Include="SingleCmdlets\NewFlickrAlbum.cs" />
+    <Compile Include="SingleCmdlets\GetFlickrAlbums.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

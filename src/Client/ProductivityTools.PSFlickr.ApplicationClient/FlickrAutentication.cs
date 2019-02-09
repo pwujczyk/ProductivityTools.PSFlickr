@@ -1,7 +1,9 @@
 ﻿using FlickrNet;
 using ProductivityTools.PSFlickr.Application.Common;
+using PSFlickr.Configuration;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,7 +14,120 @@ namespace ProductivityTools.PSFlickr.Application.Client
     {
         //pw: change it
         static OAuthRequestToken requestToken;
-        static OAuthAccessToken accessToken;
+        static OAuthAccessToken oauthAccessToken;
+        //string oauthAccessTokenToken;
+        //string oauthAccessTokenTokenSecret;
+
+        Config config = new Config();
+
+        Flickr flickr;
+        Flickr Flickr
+        {
+            get
+            {
+                if (flickr == null)
+                {
+                    //flickr = FlickrManager.GetInstanceAutenticated(config.OauthAccessTokenToken);
+                    flickr = FlickrManager.GetInstanceAutenticated(config.OauthAccessTokenToken);
+                    flickr.OAuthAccessToken = config.OauthAccessTokenToken;
+                    flickr.OAuthAccessTokenSecret = config.OauthAccessTokenTokenSecret;
+                }
+                return flickr;
+            }
+        }
+
+        private string CoverPhotoId
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(config.CoverPhotoId))
+                {
+                    config.CoverPhotoId = UploadCoverPhoto();
+                }
+                return config.CoverPhotoId;
+
+            }
+        }
+
+        //string OauthAccessTokenToken
+        //{
+        //    get
+        //    {
+        //        if (string.IsNullOrEmpty(oauthAccessTokenToken))
+        //        {
+        //            oauthAccessTokenTokenSecret = new Config().OauthAccessTokenToken;
+        //        }
+        //        return oauthAccessTokenToken;
+        //    }
+        //    set
+        //    {
+        //        oauthAccessTokenToken = value;
+        //    }
+        //}
+        //string OauthAccessTokenTokenSecret
+        //{
+        //    get
+        //    {
+        //        if (string.IsNullOrEmpty(oauthAccessTokenTokenSecret))
+        //        {
+        //            oauthAccessTokenTokenSecret = new Config().OauthAccessTokenTokenSecret;
+        //        }
+        //        return oauthAccessTokenTokenSecret;
+        //    }
+        //    set
+        //    {
+        //        oauthAccessTokenTokenSecret = value;
+        //    }
+        //}
+
+        Dictionary<Photoset, PhotosetPhotoCollection> photoTree;
+        private Dictionary<Photoset, PhotosetPhotoCollection> PhotoTree
+        {
+            get
+            {
+                if (photoTree == null)
+                {
+                    photoTree = new Dictionary<Photoset, PhotosetPhotoCollection>();
+                    ReBuildPhotoTree();
+                }
+                return photoTree;
+            }
+        }
+
+        private string UploadCoverPhoto()
+        {
+            var assemblyLocation = System.Reflection.Assembly.GetCallingAssembly().Location;
+            var assemblyLocationDirectory = System.IO.Path.GetDirectoryName(assemblyLocation);
+            var path = System.IO.Path.Combine(assemblyLocationDirectory, "PSFlickrCover.jpg");
+            var photoid=AddPhoto(path);
+            return photoid;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        public List<string> GetAlbums()
+        {
+            List<string> albumlist = this.PhotoTree.Select(x => x.Key.Title).ToList();
+            return albumlist;
+        }
+
+        public string CreateAlbum(string albumName)
+        {
+            var album = Flickr.PhotosetsCreate(albumName, CoverPhotoId);
+            return album.PhotosetId;
+        }
+
         public void OpenAutorizeAddress()
         {
             Flickr f = FlickrManager.GetInstance();
@@ -23,45 +138,47 @@ namespace ProductivityTools.PSFlickr.Application.Client
             System.Diagnostics.Process.Start(url);
         }
 
-        public void GetAccessToken(string verificationCode)
+        public void GetAndSaveAccessToken(string verificationCode)
         {
             Flickr f = FlickrManager.GetInstance();
-            accessToken = f.OAuthGetAccessToken(requestToken, verificationCode);
+            oauthAccessToken = f.OAuthGetAccessToken(requestToken, verificationCode);
+            Config c = new Config();
+            c.OauthAccessTokenToken = oauthAccessToken.Token;
+            c.OauthAccessTokenTokenSecret = oauthAccessToken.TokenSecret;
         }
 
-        public void BuildPhotoTree()
+        public void ReBuildPhotoTree()
         {
-            //album phtoos
-            Dictionary<Photoset, PhotosetPhotoCollection> albumPhotosList = new Dictionary<Photoset, PhotosetPhotoCollection>();
-
-            Flickr f = FlickrManager.GetInstanceAutenticated(accessToken.Token);
-            f.OAuthAccessToken = accessToken.Token;
-            f.OAuthAccessTokenSecret = accessToken.TokenSecret;
-            PhotosetCollection x=f.PhotosetsGetList();
+            //Flickr f = FlickrManager.GetInstanceAutenticated(config.OauthAccessTokenToken);
+            //f.OAuthAccessToken = config.OauthAccessTokenToken;
+            //f.OAuthAccessTokenSecret = config.OauthAccessTokenTokenSecret;
+            PhotosetCollection x = Flickr.PhotosetsGetList();
             foreach (Photoset item in x)
             {
-                var photoList = f.PhotosetsGetPhotos(item.PhotosetId);
-                albumPhotosList.Add(item, photoList);
+                var photoList = Flickr.PhotosetsGetPhotos(item.PhotosetId);
+                PhotoTree.Add(item, photoList);
             }
         }
 
-        public void AddPhoto()
+        public string AddPhoto(string path,string albumName)
         {
-            Flickr f = FlickrManager.GetInstanceAutenticated(accessToken.Token);
-            f.OAuthAccessToken = accessToken.Token;
-            f.OAuthAccessTokenSecret = accessToken.TokenSecret;
-
-            var photoId=f.UploadPicture(@"d:\Photographs\Processed\zdjeciaDone\2008.00.00 Wroclaw Zeromskiego\IMGP2130.JPG");
-
+            var photoId = Flickr.UploadPicture(path);
+            return photoId;
         }
 
-        public void CreateAlbum()
+        public string AddPhoto(string path)
         {
-            AddPhoto();
-            Flickr f = FlickrManager.GetInstanceAutenticated(accessToken.Token);
-            f.OAuthAccessToken = accessToken.Token;
-            f.OAuthAccessTokenSecret = accessToken.TokenSecret;
-            f.PhotosetsCreate("pawel", "46934493902");
+            var photoId = Flickr.UploadPicture(path);
+            return photoId;
         }
+
+        //public string CreateAlbum(string name)
+        //{
+        //    AddPhoto();
+        //    Flickr f = FlickrManager.GetInstanceAutenticated(oauthAccessToken.Token);
+        //    f.OAuthAccessToken = oauthAccessToken.Token;
+        //    f.OAuthAccessTokenSecret = oauthAccessToken.TokenSecret;
+        //    f.PhotosetsCreate("pawel", "46934493902");
+        //}
     }
 }

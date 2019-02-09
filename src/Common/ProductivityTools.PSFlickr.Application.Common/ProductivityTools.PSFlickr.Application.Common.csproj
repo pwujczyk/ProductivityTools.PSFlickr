@@ -49,5 +49,11 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ProductivityTools.PSFlickr.Configuration\ProductivityTools.PSFlickr.Configuration.csproj">
+      <Project>{6a242000-e8b8-467a-82b1-005b6c77c4ca}</Project>
+      <Name>ProductivityTools.PSFlickr.Configuration</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

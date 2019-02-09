@@ -1,4 +1,5 @@
 ﻿using FlickrNet;
+using PSFlickr.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,24 @@ namespace ProductivityTools.PSFlickr.Application.Common
 {
     public class FlickrManager
     {
-        public const string ApiKey = "b1714ae904a921ba7349c787b88f4bf7";
-        public const string SharedSecret = "176531a9c388f832";
+        //public const string ApiKey = "b1714ae904a921ba7349c787b88f4bf7";
+        //public const string SharedSecret = "176531a9c388f832";
+
+        private static string ApiKey
+        {
+            get
+            {
+                return new Config().ApiKey;
+            }
+        }
+
+        private static string SharedSecret
+        {
+            get
+            {
+                return new Config().SharedSecret;
+            }
+        }
 
         public static Flickr GetInstance()
         {

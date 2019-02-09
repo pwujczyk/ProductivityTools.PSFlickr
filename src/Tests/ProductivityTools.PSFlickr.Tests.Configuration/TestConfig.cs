@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace PSFlickr.Tests.Configuration
 {
-    public class TestConfig : IConfig
-    {
-        public string DatabaseName => "PSFlickrTestDatabase";
+    //public class TestConfig : IConfig
+    //{
+    //    public string DatabaseName => "PSFlickrTestDatabase";
 
-        public string DataSource => @".\SQL2017";
-    }
+    //    public string DataSource => @".\SQL2017";
+    //}
 }

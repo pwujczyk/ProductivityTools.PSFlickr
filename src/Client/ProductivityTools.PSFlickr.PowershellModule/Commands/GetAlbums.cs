@@ -16,9 +16,9 @@ namespace ProductivityTools.PSFlickr.PowershellModule.Commands
         protected override void Invoke()
         {
             FlickrAutentication autentication = new FlickrAutentication();
-            autentication.BuildPhotoTree();
+            //autentication.BuildPhotoTree();
 
-            autentication.CreateAlbum();
+            //autentication.CreateAlbum();
         }
     }
 }

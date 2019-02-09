@@ -54,6 +54,15 @@
       <Project>{45717545-d58d-4cd0-810e-a4f3c83dc55d}</Project>
       <Name>ProductivityTools.PSFlickr.Application.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Common\ProductivityTools.PSFlickr.Configuration\ProductivityTools.PSFlickr.Configuration.csproj">
+      <Project>{6a242000-e8b8-467a-82b1-005b6c77c4ca}</Project>
+      <Name>ProductivityTools.PSFlickr.Configuration</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="PSFlickrCover.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

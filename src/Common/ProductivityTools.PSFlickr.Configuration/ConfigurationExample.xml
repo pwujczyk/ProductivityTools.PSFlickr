@@ -1,0 +1,7 @@
+﻿<Configuration>
+  <Source Type="File"></Source>
+  <ApplicationConfiguration Name="PSFlickr">
+    <Config Key="ApiKey"></Config>
+    <Config Key="SharedSecret"></Config>
+  </ApplicationConfiguration>
+</Configuration>
