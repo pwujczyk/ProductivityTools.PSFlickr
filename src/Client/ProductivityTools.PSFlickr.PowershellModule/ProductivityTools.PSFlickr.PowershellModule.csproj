@@ -60,6 +60,8 @@
     <Compile Include="PSFlickr.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SingleCmdlets\AddFlickrPhoto.cs" />
+    <Compile Include="SingleCmdlets\DeleteFlickrAlbum.cs" />
+    <Compile Include="SingleCmdlets\FlickrSingleCmdlet.cs" />
     <Compile Include="SingleCmdlets\NewFlickrAlbum.cs" />
     <Compile Include="SingleCmdlets\GetFlickrAlbums.cs" />
   </ItemGroup>

@@ -9,29 +9,29 @@ using System.Threading.Tasks;
 
 namespace ProductivityTools.PSFlickr.PowershellModule
 {
-    [Cmdlet(VerbsCommon.Set, "Flickr")]
-    public class PSFlickr : PSCmdletPT
-    {
-        [Parameter]
-        public SwitchParameter RegisterApplication { get; set; }
+    //[Cmdlet(VerbsCommon.Set, "Flickr")]
+    //public class PSFlickr : PSCmdletPT
+    //{
+    //    [Parameter]
+    //    public SwitchParameter RegisterApplication { get; set; }
 
-        [Parameter]
-        public string Token { get; set; }
+    //    [Parameter]
+    //    public string Token { get; set; }
 
-        [Parameter]
-        public SwitchParameter done { get; set; }
+    //    [Parameter]
+    //    public SwitchParameter done { get; set; }
 
-        public PSFlickr()
-        {
-            base.AddCommand(new Authenticate(this));
-            base.AddCommand(new SetFlickrToken(this));
-            base.AddCommand(new GetAlbums(this));
-        }
+    //    public PSFlickr()
+    //    {
+    //        base.AddCommand(new Authenticate(this));
+    //        base.AddCommand(new SetFlickrToken(this));
+    //        base.AddCommand(new GetAlbums(this));
+    //    }
 
-        protected override void BeginProcessing()
-        {
-            base.ProcessCommands();
-            base.BeginProcessing();
-        }
-    }
+    //    protected override void BeginProcessing()
+    //    {
+    //        base.ProcessCommands();
+    //        base.BeginProcessing();
+    //    }
+    //}
 }

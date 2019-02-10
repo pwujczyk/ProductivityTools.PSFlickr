@@ -62,6 +62,7 @@ namespace ProductivityTools.PSFlickr.Application.Client
             if(coverPhotoId==CoverPhotoId)
             {
                 this.manager.SetCoverPhoto(albumId, photoId);
+                this.manager.RemovePhotoFromAlbum(coverPhotoId, albumId);
             }
             return photoId;
         }
@@ -75,6 +76,26 @@ namespace ProductivityTools.PSFlickr.Application.Client
         {
             var x = manager.CreateAlbum(name, CoverPhotoId);
             return x;
+        }
+
+        public void DeleteAlbum(string name, bool removeAlsoPhotos)
+        {
+            var albumId = this.manager.GetAlbumId(name);
+            manager.DeleteAlbum(albumId);
+            if (removeAlsoPhotos)
+            {
+                var photosIds = manager.GetPhotosFromAlbum(albumId);
+                DeletePhotos(photosIds);
+            }
+            //manager.DeleteAlbum(albumId);
+        }
+
+        public void DeletePhotos(List<string> photoIds)
+        {
+            foreach(var item in photoIds)
+            {
+                manager.RemovePhoto(item);
+            }
         }
     }
 }

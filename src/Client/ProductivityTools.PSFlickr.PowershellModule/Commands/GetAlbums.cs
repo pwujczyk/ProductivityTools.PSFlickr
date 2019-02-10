@@ -8,17 +8,17 @@ using System.Threading.Tasks;
 
 namespace ProductivityTools.PSFlickr.PowershellModule.Commands
 {
-    class GetAlbums : PSCommandPT<PSFlickr>
-    {
-        protected override bool Condition => base.Cmdlet.done.IsPresent;
+    //class GetAlbums : PSCommandPT<PSFlickr>
+    //{
+    //    protected override bool Condition => base.Cmdlet.done.IsPresent;
 
-        public GetAlbums(PSFlickr flicr) : base(flicr) { }
-        protected override void Invoke()
-        {
-            FlickrOperations autentication = new FlickrOperations();
-            //autentication.BuildPhotoTree();
+    //    public GetAlbums(PSFlickr flicr) : base(flicr) { }
+    //    protected override void Invoke()
+    //    {
+    //        FlickrOperations autentication = new FlickrOperations();
+    //        //autentication.BuildPhotoTree();
 
-            //autentication.CreateAlbum();
-        }
-    }
+    //        //autentication.CreateAlbum();
+    //    }
+    //}
 }

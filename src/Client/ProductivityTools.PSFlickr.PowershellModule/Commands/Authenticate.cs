@@ -8,20 +8,20 @@ using System.Threading.Tasks;
 
 namespace ProductivityTools.PSFlickr.PowershellModule
 {
-    class Authenticate : PSCommandPT<PSFlickr>
-    {
-        public Authenticate(PSFlickr cmdletType) : base(cmdletType)
-        {
+    //class Authenticate : PSCommandPT<PSFlickr>
+    //{
+    //    public Authenticate(PSFlickr cmdletType) : base(cmdletType)
+    //    {
 
-        }
+    //    }
 
-        protected override bool Condition => this.Cmdlet.RegisterApplication.IsPresent;
+    //    protected override bool Condition => this.Cmdlet.RegisterApplication.IsPresent;
 
-        protected override void Invoke()
-        {
-            FlickrOperations autentication = new FlickrOperations();
-            autentication.OpenAutorizeAddress();
+    //    protected override void Invoke()
+    //    {
+    //        FlickrOperations autentication = new FlickrOperations();
+    //        autentication.OpenAutorizeAddress();
 
-        }
-    }
+    //    }
+    //}
 }
