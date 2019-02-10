@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductivityTools.PSFlickr.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductivityTools.PSFlickr.Tests.Configuration", "src\Tests\ProductivityTools.PSFlickr.Tests.Configuration\ProductivityTools.PSFlickr.Tests.Configuration.csproj", "{1C596DD3-5306-4A08-81BD-1EB55F50F6AA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductivityTools.PSFlickr.FlickrProxy", "FlickrProxy\ProductivityTools.PSFlickr.FlickrProxy.csproj", "{B443429A-FC0A-4CB1-81CE-8422DE7712FA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,10 @@ Global
 		{1C596DD3-5306-4A08-81BD-1EB55F50F6AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C596DD3-5306-4A08-81BD-1EB55F50F6AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C596DD3-5306-4A08-81BD-1EB55F50F6AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B443429A-FC0A-4CB1-81CE-8422DE7712FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B443429A-FC0A-4CB1-81CE-8422DE7712FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B443429A-FC0A-4CB1-81CE-8422DE7712FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B443429A-FC0A-4CB1-81CE-8422DE7712FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -99,6 +105,7 @@ Global
 		{6E769D49-E1DF-4554-B0B0-D36A95210A8D} = {8DC5BF43-9E1B-4126-B8CA-517FA61FF7BB}
 		{80D93026-313C-45BD-B1B6-7E829C7641ED} = {8DC5BF43-9E1B-4126-B8CA-517FA61FF7BB}
 		{1C596DD3-5306-4A08-81BD-1EB55F50F6AA} = {8DC5BF43-9E1B-4126-B8CA-517FA61FF7BB}
+		{B443429A-FC0A-4CB1-81CE-8422DE7712FA} = {650A9D3B-6483-4B20-9CA1-183753F38962}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E29764BA-982E-498A-9029-636594702DBD}

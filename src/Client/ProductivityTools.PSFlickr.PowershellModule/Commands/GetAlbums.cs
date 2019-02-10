@@ -15,7 +15,7 @@ namespace ProductivityTools.PSFlickr.PowershellModule.Commands
         public GetAlbums(PSFlickr flicr) : base(flicr) { }
         protected override void Invoke()
         {
-            FlickrAutentication autentication = new FlickrAutentication();
+            FlickrOperations autentication = new FlickrOperations();
             //autentication.BuildPhotoTree();
 
             //autentication.CreateAlbum();

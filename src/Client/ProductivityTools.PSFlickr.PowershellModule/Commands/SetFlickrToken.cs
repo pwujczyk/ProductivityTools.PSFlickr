@@ -17,7 +17,7 @@ namespace ProductivityTools.PSFlickr.PowershellModule.Commands
         protected override void Invoke()
         {
             string s = this.Cmdlet.Token;
-            FlickrAutentication autentication = new FlickrAutentication();
+            FlickrOperations autentication = new FlickrOperations();
             autentication.GetAndSaveAccessToken(s);
         }
     }

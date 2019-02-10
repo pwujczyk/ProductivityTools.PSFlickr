@@ -19,7 +19,7 @@ namespace ProductivityTools.PSFlickr.PowershellModule
 
         protected override void Invoke()
         {
-            FlickrAutentication autentication = new FlickrAutentication();
+            FlickrOperations autentication = new FlickrOperations();
             autentication.OpenAutorizeAddress();
 
         }

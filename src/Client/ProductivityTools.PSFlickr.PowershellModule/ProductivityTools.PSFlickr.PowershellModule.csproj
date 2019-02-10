@@ -50,6 +50,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cmdlets\AddPhoto\AddFlickrPhoto.cs" />
+    <Compile Include="Cmdlets\AddPhoto\Commands\AddPhotoToAlbum.cs" />
+    <Compile Include="Cmdlets\AddPhoto\Commands\AddSinglePhoto.cs" />
     <Compile Include="SingleCmdlets\AuthenticateFlickr.cs" />
     <Compile Include="Commands\Authenticate.cs" />
     <Compile Include="Commands\GetAlbums.cs" />
@@ -69,5 +72,6 @@
       <Name>ProductivityTools.PSFlickr.Application.Client</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

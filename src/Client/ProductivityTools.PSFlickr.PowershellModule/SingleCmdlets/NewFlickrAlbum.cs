@@ -17,7 +17,7 @@ namespace ProductivityTools.PSFlickr.PowershellModule.SingleCmdlets
 
         protected override void ProcessRecord()
         {
-            FlickrAutentication autentication = new FlickrAutentication();
+            FlickrOperations autentication = new FlickrOperations();
             var albums = autentication.CreateAlbum(this.Name);
             WriteObject(albums);
         }

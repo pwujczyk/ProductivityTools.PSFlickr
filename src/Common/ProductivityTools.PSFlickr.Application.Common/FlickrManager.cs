@@ -1,5 +1,4 @@
-﻿using FlickrNet;
-using PSFlickr.Configuration;
+﻿using PSFlickr.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,15 +28,12 @@ namespace ProductivityTools.PSFlickr.Application.Common
             }
         }
 
-        public static Flickr GetInstance()
-        {
-            return new Flickr(ApiKey, SharedSecret);
-        }
+        //public static Flickr GetInstance()
+        //{
+        //    return new Flickr(ApiKey, SharedSecret);
+        //}
 
-        public static Flickr GetInstanceAutenticated(string token)
-        {
-            return new Flickr(ApiKey, SharedSecret, token);
-        }
+       
 
         //public static Flickr GetAuthInstance()
         //{

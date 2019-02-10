@@ -4,13 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3EEBD62C-E69A-4E8E-92C0-9CD568A12C60}</ProjectGuid>
+    <ProjectGuid>{B443429A-FC0A-4CB1-81CE-8422DE7712FA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ProductivityTools.PSFlickr.ApplicationClient</RootNamespace>
-    <AssemblyName>ProductivityTools.PSFlickr.ApplicationClient</AssemblyName>
+    <RootNamespace>ProductivityTools.PSFlickr.FlickrProxy</RootNamespace>
+    <AssemblyName>ProductivityTools.PSFlickr.FlickrProxy</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FlickrNet, Version=3.25.0.0, Culture=neutral, PublicKeyToken=2491df59efa5d132, processorArchitecture=MSIL">
+      <HintPath>..\packages\FlickrNet.3.25.0\lib\net20\FlickrNet.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -40,23 +44,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FlickrOperations.cs" />
+    <Compile Include="FlickrManager.cs" />
+    <Compile Include="FlickrManagerCore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\FlickrProxy\ProductivityTools.PSFlickr.FlickrProxy.csproj">
-      <Project>{b443429a-fc0a-4cb1-81ce-8422de7712fa}</Project>
-      <Name>ProductivityTools.PSFlickr.FlickrProxy</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Common\ProductivityTools.PSFlickr.Configuration\ProductivityTools.PSFlickr.Configuration.csproj">
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\src\Common\ProductivityTools.PSFlickr.Configuration\ProductivityTools.PSFlickr.Configuration.csproj">
       <Project>{6a242000-e8b8-467a-82b1-005b6c77c4ca}</Project>
       <Name>ProductivityTools.PSFlickr.Configuration</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="PSFlickrCover.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

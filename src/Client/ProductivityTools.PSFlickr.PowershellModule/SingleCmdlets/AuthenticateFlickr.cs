@@ -19,7 +19,7 @@ namespace ProductivityTools.PSFlickr.PowershellModule.Cmdlet
 
         protected override void ProcessRecord()
         {
-            FlickrAutentication autentication = new FlickrAutentication();
+            FlickrOperations autentication = new FlickrOperations();
             autentication.OpenAutorizeAddress();
 
             Console.WriteLine("To authorize application Flickr site will be open");
