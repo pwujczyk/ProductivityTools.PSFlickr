@@ -13,7 +13,7 @@ namespace ProductivityTools.PSFlickr.PowershellModule.SingleCmdlets
 
         public FlickrSingleCmdlet()
         {
-            FlickrOperation = FlickrOperationsFactory.GetFlickrOperations();
+            FlickrOperation = FlickrOperationsFactory.GetFlickrOperations(WriteVerbose);
         }
     }
 }

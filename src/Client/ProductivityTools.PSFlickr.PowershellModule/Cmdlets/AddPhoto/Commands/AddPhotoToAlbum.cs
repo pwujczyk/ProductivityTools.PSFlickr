@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ProductivityTools.PSFlickr.PowershellModule.Cmdlets.AddPhoto.Commands
 {
-    class AddPhotoToAlbum : PSCmdlet.PSCommandPT<AddFlickrPhoto>
+    class AddPhotoToAlbum :  PSCmdlet.PSCommandPT<AddFlickrPhoto>
     {
         protected override bool Condition => !string.IsNullOrEmpty(this.Cmdlet.Path) && !string.IsNullOrEmpty(this.Cmdlet.Album);
 
@@ -18,7 +18,7 @@ namespace ProductivityTools.PSFlickr.PowershellModule.Cmdlets.AddPhoto.Commands
 
         protected override void Invoke()
         {
-            var absolutepath = this.Cmdlet.GetPath();
+            var absolutepath = this.Cmdlet.GetPath(this.Cmdlet.Path);
             FlickrOperations autentication = FlickrOperationsFactory.GetFlickrOperations();
             var photoId = autentication.AddPhoto(absolutepath,this.Cmdlet.Album);
             WriteOutput(photoId);

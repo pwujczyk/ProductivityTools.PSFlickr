@@ -19,7 +19,7 @@ namespace ProductivityTools.PSFlickr.Application.Client
         {
             get
             {
-                if (writeVerbose!=null)
+                if (writeVerbose != null)
                 {
                     return writeVerbose;
                 }
@@ -39,6 +39,7 @@ namespace ProductivityTools.PSFlickr.Application.Client
         {
             get
             {
+
                 if (string.IsNullOrEmpty(coverPhotoId))
                 {
                     coverPhotoId = GetCoverPhoto();
@@ -113,10 +114,20 @@ namespace ProductivityTools.PSFlickr.Application.Client
             return x;
         }
 
+        private string GetOrCreateAlbum(string name)
+        {
+            string albumId = manager.GetAlbumId(name);
+            if (string.IsNullOrEmpty(albumId))
+            {
+                albumId = CreateAlbum(name);
+            }
+            return albumId;
+        }
 
         public void DeleteAlbum(string name, bool removeAlsoPhotos)
         {
             var albumId = this.manager.GetAlbumId(name);
+            if (string.IsNullOrEmpty(albumId)) throw new Exception($"No album with th ename {name}");
             manager.DeleteAlbum(albumId);
             if (removeAlsoPhotos)
             {
@@ -130,6 +141,7 @@ namespace ProductivityTools.PSFlickr.Application.Client
         {
             foreach (var item in photoIds)
             {
+                WriteVerbose($"Removing photo {item}");
                 manager.RemovePhoto(item);
             }
         }
@@ -137,7 +149,7 @@ namespace ProductivityTools.PSFlickr.Application.Client
         public string GetCoverPhoto()
         {
             string title = "PSFlickrCover";
-            var photoInAlbum=manager.AlbumPhotoByTitle (title);
+            var photoInAlbum = manager.AlbumPhotoByTitle(title);
             if (!string.IsNullOrEmpty(photoInAlbum))
             {
                 return photoInAlbum;
@@ -155,6 +167,20 @@ namespace ProductivityTools.PSFlickr.Application.Client
                 manager.AddPhotoToAlbum(albumId, photo);
             }
             manager.ReBuildPhotoTree();
+        }
+
+        public void CreateAlbumAndPushPhotos(string absolutepath)
+        {
+            var directory = System.IO.Directory.CreateDirectory(absolutepath);
+            string albumName = directory.Name;
+            FileInfo[] files = directory.GetFiles();
+
+            GetOrCreateAlbum(albumName);
+            foreach (var file in files)
+            {
+                WriteVerbose($"Pushing {file.FullName} to album {albumName}");
+                AddPhoto(file.FullName, albumName);
+            }
         }
     }
 }

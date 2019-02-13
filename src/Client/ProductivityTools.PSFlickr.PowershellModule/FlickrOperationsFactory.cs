@@ -16,7 +16,7 @@ namespace ProductivityTools.PSFlickr.PowershellModule
 
         public static FlickrOperations GetFlickrOperations(Action<string> writeVerbose)
         {
-            return new FlickrOperations();
+            return new FlickrOperations(writeVerbose);
         }
     }
 }

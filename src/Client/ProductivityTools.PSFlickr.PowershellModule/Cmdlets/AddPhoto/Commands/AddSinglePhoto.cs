@@ -15,7 +15,7 @@ namespace ProductivityTools.PSFlickr.PowershellModule.Cmdlets.AddPhoto.Commands
 
         protected override void Invoke()
         {
-            var absolutepath = this.Cmdlet.GetPath();
+            var absolutepath = this.Cmdlet.GetPath(this.Cmdlet.Path);
             FlickrOperations autentication = FlickrOperationsFactory.GetFlickrOperations();
             var photoId = autentication.AddPhoto(absolutepath);
             WriteOutput(photoId);

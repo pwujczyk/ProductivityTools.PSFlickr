@@ -53,6 +53,9 @@
     <Compile Include="Cmdlets\AddPhoto\AddFlickrPhoto.cs" />
     <Compile Include="Cmdlets\AddPhoto\Commands\AddPhotoToAlbum.cs" />
     <Compile Include="Cmdlets\AddPhoto\Commands\AddSinglePhoto.cs" />
+    <Compile Include="Cmdlets\FlickrCmdletsBase.cs" />
+    <Compile Include="Cmdlets\NewAlbumFromDirectory\Commands\CreateAlbumAndPushPhotos.cs" />
+    <Compile Include="Cmdlets\NewAlbumFromDirectory\NewFlickrAlbumFromDirectory.cs" />
     <Compile Include="FlickrOperationsFactory.cs" />
     <Compile Include="SingleCmdlets\AuthenticateFlickr.cs" />
     <Compile Include="Commands\Authenticate.cs" />

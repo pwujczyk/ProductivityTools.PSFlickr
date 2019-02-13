@@ -23,6 +23,7 @@ namespace ProductivityTools.PSFlickr.FlickrProxy
         public string CreateAlbum(string albumName, string coverPhotoId)
         {
             var album = Flickr.PhotosetsCreate(albumName, coverPhotoId);
+            ReBuildPhotoTree();
             return album.PhotosetId;
         }
 
@@ -45,16 +46,23 @@ namespace ProductivityTools.PSFlickr.FlickrProxy
             return result;
         }
 
+        public Photoset GetAlbumById(string albumId)
+        {
+            PhotosetCollection photocollection = Flickr.PhotosetsGetList();
+            Photoset album = photocollection.Single(x => x.PhotosetId==albumId);
+            return album;
+        }
+
         public string GetAlbumId(string albumName)
         {
             var album=this.PhotoTree.SingleOrDefault(x => x.Key.Title == albumName);
-            return album.Key.PhotosetId;
+            return album.Key?.PhotosetId;
         }
 
         public string GetAlbumCoverId(string albumId)
         {
-            var album= this.PhotoTree.Single(x => x.Key.PhotosetId == albumId);
-            var coverPhoto = album.Key.PrimaryPhoto.PhotoId;
+            var album = GetAlbumById(albumId);
+            var coverPhoto = album.PrimaryPhoto.PhotoId;
             return coverPhoto;
         }
 

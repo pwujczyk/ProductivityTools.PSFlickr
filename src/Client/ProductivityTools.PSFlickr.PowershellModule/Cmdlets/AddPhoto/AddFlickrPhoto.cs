@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace ProductivityTools.PSFlickr.PowershellModule.Cmdlets.AddPhoto
 {
     [Cmdlet(VerbsCommon.Add, "FlickrPhoto")]
-    public class AddFlickrPhoto : ProductivityTools.PSCmdlet.PSCmdletPT
+    public class AddFlickrPhoto : FlickrCmdletsBase
     {
         [Parameter(Position = 0)]
         public string Path { get; set; }
@@ -31,26 +31,10 @@ namespace ProductivityTools.PSFlickr.PowershellModule.Cmdlets.AddPhoto
 
         protected override void ProcessRecord()
         {
-
             this.ProcessCommands();
             
         }
 
-        public string GetPath()
-        {
-            FlickrOperations autentication = FlickrOperationsFactory.GetFlickrOperations();
-            string absolutePath;
 
-            if (System.IO.Path.IsPathRooted(Path))
-            {
-                absolutePath = Path;
-            }
-            else
-            {
-                string currentDirectory = CurrentProviderLocation("FileSystem").ProviderPath;
-                absolutePath = System.IO.Path.GetFullPath(System.IO.Path.Combine(currentDirectory, Path));
-            }
-            return absolutePath;
-        }
     }
 }
