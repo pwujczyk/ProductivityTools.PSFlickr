@@ -1,5 +1,6 @@
 ﻿using ProductivityTools.PSCmdlet;
 using ProductivityTools.PSFlickr.Application.Client;
+using ProductivityTools.PSFlickr.PowershellModule.SingleCmdlets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 namespace ProductivityTools.PSFlickr.PowershellModule.Cmdlet
 {
     [Cmdlet("Authenticate", "Flickr")]
-    public class AuthenticateFlickr : System.Management.Automation.PSCmdlet
+    public class AuthenticateFlickr : FlickrSingleCmdlet
     {
         protected override void BeginProcessing()
         {
@@ -19,8 +20,8 @@ namespace ProductivityTools.PSFlickr.PowershellModule.Cmdlet
 
         protected override void ProcessRecord()
         {
-            FlickrOperations autentication = new FlickrOperations();
-            autentication.OpenAutorizeAddress();
+
+            base.FlickrOperation.OpenAutorizeAddress();
 
             Console.WriteLine("To authorize application Flickr site will be open");
             Console.WriteLine("Please copy the code which will be shown and paste it here:");
@@ -31,7 +32,7 @@ namespace ProductivityTools.PSFlickr.PowershellModule.Cmdlet
             }
             else
             {
-                autentication.GetAndSaveAccessToken(token);
+                FlickrOperation.GetAndSaveAccessToken(token);
             }
             base.ProcessRecord();
             Console.Write("xxxx");

@@ -38,7 +38,7 @@ namespace ProductivityTools.PSFlickr.PowershellModule.Cmdlets.AddPhoto
 
         public string GetPath()
         {
-            FlickrOperations autentication = new FlickrOperations();
+            FlickrOperations autentication = FlickrOperationsFactory.GetFlickrOperations();
             string absolutePath;
 
             if (System.IO.Path.IsPathRooted(Path))

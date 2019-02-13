@@ -14,16 +14,51 @@ namespace ProductivityTools.PSFlickr.Application.Client
         Config config = new Config();
         FlickrManager manager = new FlickrManager();
 
+        private Action<string> writeVerbose;
+        Action<string> WriteVerbose
+        {
+            get
+            {
+                if (writeVerbose!=null)
+                {
+                    return writeVerbose;
+                }
+                else
+                {
+                    return s => { };
+                }
+            }
+            set
+            {
+                writeVerbose = value;
+            }
+        }
+
+        private string coverPhotoId;
         private string CoverPhotoId
         {
             get
             {
-                if (string.IsNullOrEmpty(config.CoverPhotoId))
+                if (string.IsNullOrEmpty(coverPhotoId))
                 {
-                    config.CoverPhotoId = UploadCoverPhoto();
+                    coverPhotoId = GetCoverPhoto();
+                    if (string.IsNullOrEmpty(coverPhotoId))
+                    {
+                        coverPhotoId = UploadCoverPhoto();
+                    }
                 }
-                return config.CoverPhotoId;
+                return coverPhotoId;
             }
+        }
+
+        public FlickrOperations()
+        {
+
+        }
+
+        public FlickrOperations(Action<string> writeVerbose)
+        {
+            this.WriteVerbose = writeVerbose;
         }
 
         private string UploadCoverPhoto()
@@ -59,7 +94,7 @@ namespace ProductivityTools.PSFlickr.Application.Client
             manager.AddPhotoToAlbum(albumId, photoId);
 
             var coverPhotoId = this.manager.GetAlbumCoverId(albumId);
-            if(coverPhotoId==CoverPhotoId)
+            if (coverPhotoId == CoverPhotoId)
             {
                 this.manager.SetCoverPhoto(albumId, photoId);
                 this.manager.RemovePhotoFromAlbum(coverPhotoId, albumId);
@@ -78,6 +113,7 @@ namespace ProductivityTools.PSFlickr.Application.Client
             return x;
         }
 
+
         public void DeleteAlbum(string name, bool removeAlsoPhotos)
         {
             var albumId = this.manager.GetAlbumId(name);
@@ -92,10 +128,33 @@ namespace ProductivityTools.PSFlickr.Application.Client
 
         public void DeletePhotos(List<string> photoIds)
         {
-            foreach(var item in photoIds)
+            foreach (var item in photoIds)
             {
                 manager.RemovePhoto(item);
             }
+        }
+
+        public string GetCoverPhoto()
+        {
+            string title = "PSFlickrCover";
+            var photoInAlbum=manager.AlbumPhotoByTitle (title);
+            if (!string.IsNullOrEmpty(photoInAlbum))
+            {
+                return photoInAlbum;
+            }
+            var singlePhotos = manager.SinglePhotoByTitle(title);
+            return singlePhotos;
+        }
+
+        public void MoveSinglePhotosToAlbum(string name)
+        {
+            var singlePhotos = manager.GetPhotosNotInAlbum();
+            var albumId = manager.GetAlbumId(name);
+            foreach (var photo in singlePhotos)
+            {
+                manager.AddPhotoToAlbum(albumId, photo);
+            }
+            manager.ReBuildPhotoTree();
         }
     }
 }

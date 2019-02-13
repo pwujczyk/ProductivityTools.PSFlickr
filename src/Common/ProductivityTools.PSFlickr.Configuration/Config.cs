@@ -66,18 +66,18 @@ namespace PSFlickr.Configuration
             }
         }
 
-        public string CoverPhotoId
-        {
-            get
-            {
-                var x = conf["CoverPhotoId"];
-                return x;
-            }
-            set
-            {
-                conf.SetValue("CoverPhotoId", value);
-            }
-        }
+        //public string CoverPhotoId
+        //{
+        //    get
+        //    {
+        //        var x = conf["CoverPhotoId"];
+        //        return x;
+        //    }
+        //    set
+        //    {
+        //        conf.SetValue("CoverPhotoId", value);
+        //    }
+        //}
 
 
     }

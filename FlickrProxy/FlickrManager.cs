@@ -39,6 +39,12 @@ namespace ProductivityTools.PSFlickr.FlickrProxy
             return albumlist;
         }
 
+        public List<string> GetPhotosNotInAlbum()
+        {
+            var result = SinglePhotos.Select(x => x.PhotoId).ToList() ;
+            return result;
+        }
+
         public string GetAlbumId(string albumName)
         {
             var album=this.PhotoTree.SingleOrDefault(x => x.Key.Title == albumName);
@@ -89,6 +95,18 @@ namespace ProductivityTools.PSFlickr.FlickrProxy
             var album=this.PhotoTree.Single(x => x.Key.PhotosetId == albumId);
             var photoIds=album.Value.Select(x => x.PhotoId).ToList<string>();
             return photoIds;
+        }
+
+        public string AlbumPhotoByTitle(string title)
+        {
+            var coverPhoto= PhotoTree.SelectMany(x => x.Value).FirstOrDefault(photo => photo.Title == title);
+            return coverPhoto?.PhotoId;
+        }
+
+        public string SinglePhotoByTitle(string title)
+        {
+            var singlePhoto = SinglePhotos.FirstOrDefault(x => x.Title == title);
+            return singlePhoto?.PhotoId;
         }
     }
 }

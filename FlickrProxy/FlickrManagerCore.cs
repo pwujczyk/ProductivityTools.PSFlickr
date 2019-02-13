@@ -25,6 +25,33 @@ namespace ProductivityTools.PSFlickr.FlickrProxy
             }
         }
 
+        private List<Photo> singlePhotos;
+        protected List<Photo> SinglePhotos
+        {
+            get
+            {
+                if (singlePhotos==null)
+                {
+                    RebuildSinglePhotos();
+                }
+                
+                return singlePhotos;
+            }
+        }
+
+        private void RebuildSinglePhotos()
+        {
+            if (singlePhotos==null)
+            {
+                singlePhotos = new List<Photo>();
+            }
+            var photos = Flickr.PhotosGetNotInSet();
+            foreach(var photo in photos)
+            {
+                this.singlePhotos.Add(photo);
+            }
+        }
+
         Flickr flickr;
         protected Flickr Flickr
         {
@@ -51,8 +78,9 @@ namespace ProductivityTools.PSFlickr.FlickrProxy
             foreach (Photoset item in x)
             {
                 var photoList = Flickr.PhotosetsGetPhotos(item.PhotosetId);
-                PhotoTree.Add(item, photoList);
+                photoTree.Add(item, photoList);
             }
         }
+
     }
 }

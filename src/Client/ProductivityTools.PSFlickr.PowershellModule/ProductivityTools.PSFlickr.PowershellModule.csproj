@@ -53,13 +53,14 @@
     <Compile Include="Cmdlets\AddPhoto\AddFlickrPhoto.cs" />
     <Compile Include="Cmdlets\AddPhoto\Commands\AddPhotoToAlbum.cs" />
     <Compile Include="Cmdlets\AddPhoto\Commands\AddSinglePhoto.cs" />
+    <Compile Include="FlickrOperationsFactory.cs" />
     <Compile Include="SingleCmdlets\AuthenticateFlickr.cs" />
     <Compile Include="Commands\Authenticate.cs" />
     <Compile Include="Commands\GetAlbums.cs" />
     <Compile Include="Commands\SetFlickrToken.cs" />
     <Compile Include="PSFlickr.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SingleCmdlets\AddFlickrPhoto.cs" />
+    <Compile Include="SingleCmdlets\MoveFlickrSinglePhotosToAlbum.cs" />
     <Compile Include="SingleCmdlets\DeleteFlickrAlbum.cs" />
     <Compile Include="SingleCmdlets\FlickrSingleCmdlet.cs" />
     <Compile Include="SingleCmdlets\NewFlickrAlbum.cs" />

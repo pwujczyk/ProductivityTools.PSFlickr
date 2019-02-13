@@ -9,11 +9,11 @@ namespace ProductivityTools.PSFlickr.PowershellModule.SingleCmdlets
 {
     public abstract class FlickrSingleCmdlet: System.Management.Automation.PSCmdlet
     {
-        protected FlickrOperations FlickrOperation = new FlickrOperations();
+        protected FlickrOperations FlickrOperation;
 
         public FlickrSingleCmdlet()
         {
-
+            FlickrOperation = FlickrOperationsFactory.GetFlickrOperations();
         }
     }
 }
