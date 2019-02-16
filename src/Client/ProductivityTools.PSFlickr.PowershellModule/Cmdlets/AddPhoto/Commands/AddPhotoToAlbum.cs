@@ -20,7 +20,7 @@ namespace ProductivityTools.PSFlickr.PowershellModule.Cmdlets.AddPhoto.Commands
         {
             var absolutepath = this.Cmdlet.GetPath(this.Cmdlet.Path);
             FlickrOperations autentication = FlickrOperationsFactory.GetFlickrOperations();
-            var photoId = autentication.AddPhoto(absolutepath,this.Cmdlet.Album);
+            var photoId = autentication.AddPhotoToAlbumName(absolutepath,this.Cmdlet.Album);
             WriteOutput(photoId);
         }
     }

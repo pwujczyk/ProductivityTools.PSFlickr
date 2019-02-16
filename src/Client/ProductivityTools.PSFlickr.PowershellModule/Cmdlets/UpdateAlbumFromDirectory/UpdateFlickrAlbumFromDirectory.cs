@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ProductivityTools.PSFlickr.PowershellModule.Cmdlets.NewAlbumFromDirectory
 {
-    [Cmdlet(VerbsCommon.New, "FlickrAlbumFromDirectory")]
+    [Cmdlet("Update", "FlickrAlbumFromDirectory")]
     public class NewFlickrAlbumFromDirectory : FlickrCmdletsBase
     {
         [Parameter(Mandatory = false, Position = 0)]
@@ -16,7 +16,7 @@ namespace ProductivityTools.PSFlickr.PowershellModule.Cmdlets.NewAlbumFromDirect
 
         public NewFlickrAlbumFromDirectory()
         {
-            this.AddCommand(new CreateAlbumAndPushPhotos(this));
+            this.AddCommand(new UpdateAlbumAndPushPhotos(this));
         }
 
         protected override void ProcessRecord()

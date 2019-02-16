@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace ProductivityTools.PSFlickr.PowershellModule.Cmdlets.NewAlbumFromDirectory.Commands
 {
-    public class CreateAlbumAndPushPhotos : PSCmdlet.PSCommandPT<NewFlickrAlbumFromDirectory>
+    public class UpdateAlbumAndPushPhotos : PSCmdlet.PSCommandPT<NewFlickrAlbumFromDirectory>
     {
         protected override bool Condition => true;
 
-        public CreateAlbumAndPushPhotos(NewFlickrAlbumFromDirectory cmdlet) : base(cmdlet) { }
+        public UpdateAlbumAndPushPhotos(NewFlickrAlbumFromDirectory cmdlet) : base(cmdlet) { }
 
         protected override void Invoke()
         {

@@ -88,9 +88,15 @@ namespace ProductivityTools.PSFlickr.Application.Client
             return photoId;
         }
 
-        public string AddPhoto(string path, string albumName)
+        public string AddPhotoToAlbumName(string path, string albumName)
         {
             var albumId = this.manager.GetAlbumId(albumName);
+            var photoid = AddPhotoToAlbumId(path, albumId);
+            return photoid;
+        }
+
+        public string AddPhotoToAlbumId(string path, string albumId)
+        {
             var photoId = manager.AddPhoto(path);
             manager.AddPhotoToAlbum(albumId, photoId);
 
@@ -102,6 +108,31 @@ namespace ProductivityTools.PSFlickr.Application.Client
             }
             return photoId;
         }
+
+        //public string AddPhoto(string path, string albumName)
+        //{
+
+
+        //    var fileName=System.IO.Path.GetFileNameWithoutExtension(path);
+        //    var photoId = photosTitle.FirstOrDefault(x => x == fileName);
+        //    if (photoId==null)
+        //    {
+        //        photoId = manager.AddPhoto(path);
+        //        manager.AddPhotoToAlbum(albumId, photoId);
+
+        //        var coverPhotoId = this.manager.GetAlbumCoverId(albumId);
+        //        if (coverPhotoId == CoverPhotoId)
+        //        {
+        //            this.manager.SetCoverPhoto(albumId, photoId);
+        //            this.manager.RemovePhotoFromAlbum(coverPhotoId, albumId);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        WriteVerbose($"Photo {fileName} already exists in {albumName}");
+        //    }
+        //    return photoId;
+        //}
 
         public List<string> GetAlbums()
         {
@@ -131,7 +162,7 @@ namespace ProductivityTools.PSFlickr.Application.Client
             manager.DeleteAlbum(albumId);
             if (removeAlsoPhotos)
             {
-                var photosIds = manager.GetPhotosFromAlbum(albumId);
+                var photosIds = manager.GetPhotosIdFromAlbum(albumId);
                 DeletePhotos(photosIds);
             }
             //manager.DeleteAlbum(albumId);
@@ -175,11 +206,24 @@ namespace ProductivityTools.PSFlickr.Application.Client
             string albumName = directory.Name;
             FileInfo[] files = directory.GetFiles();
 
-            GetOrCreateAlbum(albumName);
+            var albumId = GetOrCreateAlbum(albumName);
+            var photosTitle = manager.GetPhotosTitleFromAlbum(albumId);
+
             foreach (var file in files)
             {
-                WriteVerbose($"Pushing {file.FullName} to album {albumName}");
-                AddPhoto(file.FullName, albumName);
+                string path = file.FullName;
+                var fileName = System.IO.Path.GetFileNameWithoutExtension(path);
+
+                var photoId = photosTitle.Any(x => x == fileName);
+                if (photoId)
+                {
+                    WriteVerbose($"Photo {fileName} already exists in {albumName}");
+                }
+                else
+                {
+                    WriteVerbose($"Pushing {file.FullName} to album {albumName}");
+                    AddPhotoToAlbumId(file.FullName, albumId);
+                }
             }
         }
     }

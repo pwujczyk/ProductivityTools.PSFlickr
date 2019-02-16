@@ -98,10 +98,17 @@ namespace ProductivityTools.PSFlickr.FlickrProxy
             Flickr.PhotosDelete(photoId);
         }
 
-        public List<string> GetPhotosFromAlbum(string albumId)
+        public List<string> GetPhotosIdFromAlbum(string albumId)
         {
             var album=this.PhotoTree.Single(x => x.Key.PhotosetId == albumId);
             var photoIds=album.Value.Select(x => x.PhotoId).ToList<string>();
+            return photoIds;
+        }
+
+        public List<string> GetPhotosTitleFromAlbum(string albumId)
+        {
+            var album = Flickr.PhotosetsGetPhotos(albumId);
+            var photoIds = album.Select(x => x.Title).ToList<string>();
             return photoIds;
         }
 
