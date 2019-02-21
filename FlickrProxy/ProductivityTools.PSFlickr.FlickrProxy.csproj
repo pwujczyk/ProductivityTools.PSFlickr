@@ -46,6 +46,10 @@
   <ItemGroup>
     <Compile Include="FlickrManager.cs" />
     <Compile Include="FlickrManagerCore.cs" />
+    <Compile Include="FlickrSimpleObjects\Album.cs" />
+    <Compile Include="FlickrSimpleObjects\Photo.cs" />
+    <Compile Include="Ids\AlbumId.cs" />
+    <Compile Include="Ids\PhotoId.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

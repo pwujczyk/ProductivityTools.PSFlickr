@@ -32,6 +32,14 @@ namespace PSFlickr.Configuration
             }
         }
 
+        public string MaintenanceAlbumName
+        {
+            get
+            {
+                return GetValue("MaintananceAlbumName");
+            }
+        }
+
         public string SharedSecret
         {
             get

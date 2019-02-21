@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace ProductivityTools.PSFlickr.PowershellModule.Cmdlet
 {
     [Cmdlet("Authenticate", "Flickr")]
-    public class AuthenticateFlickr : FlickrSingleCmdlet
+    public class AuthenticateFlickr : FlickrSingleCmdletBase
     {
         protected override void BeginProcessing()
         {

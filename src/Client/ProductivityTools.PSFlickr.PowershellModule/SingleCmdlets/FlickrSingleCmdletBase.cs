@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace ProductivityTools.PSFlickr.PowershellModule.SingleCmdlets
 {
-    public abstract class FlickrSingleCmdlet: System.Management.Automation.PSCmdlet
+    public abstract class FlickrSingleCmdletBase: System.Management.Automation.PSCmdlet
     {
         protected FlickrOperations FlickrOperation;
 
-        public FlickrSingleCmdlet()
+        public FlickrSingleCmdletBase()
         {
             FlickrOperation = FlickrOperationsFactory.GetFlickrOperations(WriteVerbose);
         }

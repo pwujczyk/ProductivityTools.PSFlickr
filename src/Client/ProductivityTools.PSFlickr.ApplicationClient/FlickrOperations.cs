@@ -1,4 +1,6 @@
 ﻿using ProductivityTools.PSFlickr.FlickrProxy;
+using ProductivityTools.PSFlickr.FlickrProxy.FlickrSimpleObjects;
+using ProductivityTools.PSFlickr.FlickrProxy.Ids;
 using PSFlickr.Configuration;
 using System;
 using System.Collections.Generic;
@@ -90,21 +92,21 @@ namespace ProductivityTools.PSFlickr.Application.Client
 
         public string AddPhotoToAlbumName(string path, string albumName)
         {
-            var albumId = this.manager.GetAlbumId(albumName);
+            var albumId = this.manager.GetAlbumByName(albumName);
             var photoid = AddPhotoToAlbumId(path, albumId);
             return photoid;
         }
 
-        public string AddPhotoToAlbumId(string path, string albumId)
+        public string AddPhotoToAlbumId(string path, Album album)
         {
             var photoId = manager.AddPhoto(path);
-            manager.AddPhotoToAlbum(albumId, photoId);
+            manager.AddPhotoToAlbum(album, photoId);
 
-            var coverPhotoId = this.manager.GetAlbumCoverId(albumId);
+            var coverPhotoId = this.manager.GetAlbumCoverId(album);
             if (coverPhotoId == CoverPhotoId)
             {
-                this.manager.SetCoverPhoto(albumId, photoId);
-                this.manager.RemovePhotoFromAlbum(coverPhotoId, albumId);
+                this.manager.SetCoverPhoto(album, photoId);
+                this.manager.RemovePhotoFromAlbum(coverPhotoId, album);
             }
             return photoId;
         }
@@ -134,70 +136,127 @@ namespace ProductivityTools.PSFlickr.Application.Client
         //    return photoId;
         //}
 
-        public List<string> GetAlbums()
+        public List<string> GetAlbumsName()
         {
-            return this.manager.GetAlbums();
+            return this.manager.GetAlbums().Select(x => x.Name).ToList();
         }
 
         public string CreateAlbum(string name)
         {
+            var x = CreateAlbumInternal(name);
+            return x.AlbumId.Id;
+        }
+
+        private Album CreateAlbumInternal(string name)
+        {
+            WriteVerbose($"Creating album {name}");
             var x = manager.CreateAlbum(name, CoverPhotoId);
             return x;
         }
 
-        private string GetOrCreateAlbum(string name)
+        private Album GetOrCreateAlbum(string name)
         {
-            string albumId = manager.GetAlbumId(name);
-            if (string.IsNullOrEmpty(albumId))
+            Album albumId = manager.GetAlbumByName(name);
+            if (albumId == null)
             {
-                albumId = CreateAlbum(name);
+                albumId = CreateAlbumInternal(name);
             }
             return albumId;
         }
 
-        public void DeleteAlbum(string name, bool removeAlsoPhotos)
+        public void DeleteAlbumByName(string name, bool removeAlsoPhotos)
         {
-            var albumId = this.manager.GetAlbumId(name);
-            if (string.IsNullOrEmpty(albumId)) throw new Exception($"No album with th ename {name}");
-            manager.DeleteAlbum(albumId);
-            if (removeAlsoPhotos)
-            {
-                var photosIds = manager.GetPhotosIdFromAlbum(albumId);
-                DeletePhotos(photosIds);
-            }
-            //manager.DeleteAlbum(albumId);
+            WriteVerbose($"Removing album {name}");
+            Album album = this.manager.GetAlbumByName(name);
+            DeleteAlbum(album, removeAlsoPhotos);
         }
 
-        public void DeletePhotos(List<string> photoIds)
+        public void DeleteAlbum(Album album, bool removeAlsoPhotos)
         {
-            foreach (var item in photoIds)
+            //if (string.IsNullOrEmpty(albumId)) throw new Exception($"No album with id {id.Id}");
+            if (removeAlsoPhotos)
             {
-                WriteVerbose($"Removing photo {item}");
+                var photos = manager.GetPhotos(album);// manager.GetPhotosIdFromAlbum(id.Id);
+                DeletePhotos(photos, album);
+            }
+            manager.DeleteAlbum(album);
+        }
+
+        public void ClearFlickr()
+        {
+            var albums = this.manager.GetAlbums();
+            foreach (var album in albums)
+            {
+                DeleteAlbum(album, true);
+            }
+            var temporaryAlbum = DateTime.Now.ToLongTimeString();
+            CreateAlbum(temporaryAlbum);
+            MoveSinglePhotosToAlbum(temporaryAlbum);
+            DeleteAlbumByName(temporaryAlbum, true);
+        }
+
+        public void DeletePhotos(List<PSPhoto> photos, Album album)
+        {
+            foreach (var item in photos)
+            {
+                var message = $"Removing photo {item.Title}";
+                if (album != null)
+                {
+                    message += $" from album: {album.Name}";
+                }
+                WriteVerbose(message);
                 manager.RemovePhoto(item);
             }
+        }
+
+        public Album GetMaintananceAlbum()
+        {
+            var maintananceAlbumName = config.MaintenanceAlbumName;
+            var album = manager.GetAlbumByName(maintananceAlbumName);
+            if (album == null)
+            {
+                album = CreateMaintananceAlbum();
+            }
+            return album;
+        }
+
+        private Album CreateMaintananceAlbum()
+        {
+            var coverPhoto = UploadCoverPhoto();
+            var album = manager.CreateAlbum(config.MaintenanceAlbumName, coverPhoto);
+            return album;
         }
 
         public string GetCoverPhoto()
         {
             string title = "PSFlickrCover";
-            var photoInAlbum = manager.AlbumPhotoByTitle(title);
-            if (!string.IsNullOrEmpty(photoInAlbum))
+            var maintanceAlbum = GetMaintananceAlbum();
+            var photosTitle = manager.GetPhotos(maintanceAlbum);
+            var flickCover = photosTitle.FirstOrDefault(x => x.Title == title);
+            var flickCoverId = flickCover.PhotoId.Id;
+
+            // var photoInAlbum = manager.AlbumPhotoByTitle(title);
+            if (string.IsNullOrEmpty(flickCoverId))
             {
-                return photoInAlbum;
+                flickCoverId = UploadCoverPhoto();
+                manager.AddPhotoToAlbum(maintanceAlbum, flickCoverId);
             }
-            var singlePhotos = manager.SinglePhotoByTitle(title);
-            return singlePhotos;
+
+            return flickCoverId;
+
+            //var singlePhotos = manager.SinglePhotoByTitle(title);
+            //return singlePhotos;
         }
 
         public void MoveSinglePhotosToAlbum(string name)
         {
+            WriteVerbose($"Moving single photos to {name}");
             var singlePhotos = manager.GetPhotosNotInAlbum();
-            var albumId = manager.GetAlbumId(name);
+            var albumId = manager.GetAlbumByName(name);
             foreach (var photo in singlePhotos)
             {
                 manager.AddPhotoToAlbum(albumId, photo);
             }
-            manager.ReBuildPhotoTree();
         }
 
         public void CreateAlbumAndPushPhotos(string absolutepath)
@@ -207,7 +266,7 @@ namespace ProductivityTools.PSFlickr.Application.Client
             FileInfo[] files = directory.GetFiles();
 
             var albumId = GetOrCreateAlbum(albumName);
-            var photosTitle = manager.GetPhotosTitleFromAlbum(albumId);
+            var photosTitle = manager.GetPhotosTitleFromAlbum(albumId.AlbumId.Id);
 
             foreach (var file in files)
             {

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace ProductivityTools.PSFlickr.PowershellModule.SingleCmdlets
 {
     [Cmdlet(VerbsCommon.Remove, "FlickrAlbum")]
-    public class DeleteFlickrAlbum : FlickrSingleCmdlet
+    public class DeleteFlickrAlbum : FlickrSingleCmdletBase
     {
         [Parameter(Position = 0)]
         public string Name { get; set; }
@@ -18,7 +18,7 @@ namespace ProductivityTools.PSFlickr.PowershellModule.SingleCmdlets
 
         protected override void ProcessRecord()
         {
-            base.FlickrOperation.DeleteAlbum(this.Name, this.RemoveAlsoPhotosInside.IsPresent);
+            base.FlickrOperation.DeleteAlbumByName(this.Name, this.RemoveAlsoPhotosInside.IsPresent);
             base.ProcessRecord();
         }
     }

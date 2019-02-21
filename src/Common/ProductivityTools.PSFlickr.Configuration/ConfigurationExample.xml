@@ -1,7 +1,11 @@
-﻿<Configuration>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Configuration>
   <Source Type="File"></Source>
   <ApplicationConfiguration Name="PSFlickr">
     <Config Key="ApiKey"></Config>
     <Config Key="SharedSecret"></Config>
+    <Config Key="AccessToken" Category=""></Config>
+    <Config Key="AccessTokenSecret" Category=""></Config>
+    <Config key="MaintananceAlbumName">.</Config>
   </ApplicationConfiguration>
 </Configuration>

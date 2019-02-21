@@ -1,4 +1,6 @@
 ﻿using FlickrNet;
+using ProductivityTools.PSFlickr.FlickrProxy.FlickrSimpleObjects;
+using ProductivityTools.PSFlickr.FlickrProxy.Ids;
 using PSFlickr.Configuration;
 using System;
 using System.Collections.Generic;
@@ -70,6 +72,17 @@ namespace ProductivityTools.PSFlickr.FlickrProxy
         public Flickr GetInstanceAutenticated(string token)
         {
             return new Flickr(config.ApiKey, config.SharedSecret, token);
+        }
+
+        public List<PSPhoto> GetPhotos(Album album)
+        {
+            var photos=Flickr.PhotosetsGetPhotos(album.AlbumId.Id);
+            return photos.Select(x => new PSPhoto(new PhotoId(x.PhotoId), x.Title)).ToList();
+        }
+
+        public void DeleteAlbum(Album album)
+        {
+            Flickr.PhotosetsDelete(album.AlbumId.Id);
         }
 
         public void ReBuildPhotoTree()
