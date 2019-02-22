@@ -123,8 +123,6 @@ namespace ProductivityTools.PSFlickr.FlickrProxy
             return photoIds;
         }
 
-
-
         public string AlbumPhotoByTitle(string title)
         {
             var coverPhoto = PhotoTree.SelectMany(x => x.Value).FirstOrDefault(photo => photo.Title == title);

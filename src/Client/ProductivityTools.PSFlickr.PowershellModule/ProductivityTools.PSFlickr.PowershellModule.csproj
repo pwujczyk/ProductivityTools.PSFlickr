@@ -56,6 +56,8 @@
     <Compile Include="Cmdlets\FlickrCmdletsBase.cs" />
     <Compile Include="Cmdlets\UpdateAlbumFromDirectory\Commands\CreateAlbumAndPushPhotos.cs" />
     <Compile Include="Cmdlets\UpdateAlbumFromDirectory\UpdateFlickrAlbumFromDirectory.cs" />
+    <Compile Include="Cmdlets\UpdateSet\Commands\UpdateAlbumsAndPushPhotos.cs" />
+    <Compile Include="Cmdlets\UpdateSet\UpdateFlickrSet.cs" />
     <Compile Include="FileHelper.cs" />
     <Compile Include="FlickrOperationsFactory.cs" />
     <Compile Include="SingleCmdlets\AuthenticateFlickr.cs" />

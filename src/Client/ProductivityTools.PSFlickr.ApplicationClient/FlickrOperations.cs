@@ -173,13 +173,14 @@ namespace ProductivityTools.PSFlickr.Application.Client
 
         public void DeleteAlbum(Album album, bool removeAlsoPhotos)
         {
-            //if (string.IsNullOrEmpty(albumId)) throw new Exception($"No album with id {id.Id}");
             if (removeAlsoPhotos)
             {
-                var photos = manager.GetPhotos(album);// manager.GetPhotosIdFromAlbum(id.Id);
+                var photos = manager.GetPhotos(album);
                 DeletePhotos(photos, album);
             }
-            manager.DeleteAlbum(album);
+            writeVerbose("Delete album");
+            //not needed album without photos is deleted automatically
+            //manager.DeleteAlbum(album);
         }
 
         public void ClearFlickr()
@@ -259,6 +260,16 @@ namespace ProductivityTools.PSFlickr.Application.Client
             }
         }
 
+        public void CreateAlbumsFromDirectories(string directoryPath)
+        {
+            var mainDirectory = System.IO.Directory.CreateDirectory(directoryPath);
+            DirectoryInfo[] directories = mainDirectory.GetDirectories();
+            foreach (var direcotry in directories)
+            {
+                CreateAlbumAndPushPhotos(direcotry.FullName);
+            }
+        }
+
         public void CreateAlbumAndPushPhotos(string absolutepath)
         {
             var directory = System.IO.Directory.CreateDirectory(absolutepath);
@@ -267,22 +278,31 @@ namespace ProductivityTools.PSFlickr.Application.Client
 
             var albumId = GetOrCreateAlbum(albumName);
             var photosTitle = manager.GetPhotosTitleFromAlbum(albumId.AlbumId.Id);
+            var allowedTypes = config.PhotoTypes.Split(' ', ',', ';').Select(x => x.ToLower()) ;
 
             foreach (var file in files)
             {
-                string path = file.FullName;
-                var fileName = System.IO.Path.GetFileNameWithoutExtension(path);
-
-                var photoId = photosTitle.Any(x => x == fileName);
-                if (photoId)
+                if (allowedTypes.Contains(file.Extension.Trim('.').ToLower()))
                 {
-                    WriteVerbose($"Photo {fileName} already exists in {albumName}");
+                    string path = file.FullName;
+                    var fileName = System.IO.Path.GetFileNameWithoutExtension(path);
+
+                    var photoId = photosTitle.Any(x => x == fileName);
+                    if (photoId)
+                    {
+                        WriteVerbose($"Photo {fileName} already exists in {albumName}");
+                    }
+                    else
+                    {
+                        WriteVerbose($"Pushing {file.FullName} to album {albumName}");
+                        AddPhotoToAlbumId(file.FullName, albumId);
+                    }
                 }
                 else
                 {
-                    WriteVerbose($"Pushing {file.FullName} to album {albumName}");
-                    AddPhotoToAlbumId(file.FullName, albumId);
+                    writeVerbose($"Not supported type {file.Extension}");
                 }
+              
             }
         }
     }

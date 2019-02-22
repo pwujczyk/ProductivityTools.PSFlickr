@@ -32,6 +32,14 @@ namespace PSFlickr.Configuration
             }
         }
 
+        public string PhotoTypes
+        {
+            get
+            {
+                return GetValue("PhotoTypes");
+            }
+        }
+
         public string MaintenanceAlbumName
         {
             get
