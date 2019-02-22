@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Configuration>
+  <Source Type="File"></Source>
+  <ApplicationConfiguration Name="PSFlickr">
+    <Config Key="ApiKey">b1714ae904a921ba7349c787b88f4bf7</Config>
+    <Config Key="SharedSecret">176531a9c388f832</Config>
+    <Config Key="AccessToken" Category="">72157703045408432-cfdaad56b4825692</Config>
+    <Config Key="AccessTokenSecret" Category="">9e7a50580f43539e</Config>
+    <Config Key="PhotoTypes" Category="">jpg</Config>
+    <Config Key="MaintananceAlbumName" Category="">aa</Config>
+  </ApplicationConfiguration>
+</Configuration>
