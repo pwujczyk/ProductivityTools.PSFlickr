@@ -13,19 +13,6 @@ namespace ProductivityTools.PSFlickr.FlickrProxy
     public class FlickrManagerCore
     {
         protected Config config = new Config();
-        Dictionary<Photoset, PhotosetPhotoCollection> photoTree;
-        protected Dictionary<Photoset, PhotosetPhotoCollection> PhotoTree
-        {
-            get
-            {
-                if (photoTree == null)
-                {
-                    photoTree = new Dictionary<Photoset, PhotosetPhotoCollection>();
-                    ReBuildPhotoTree();
-                }
-                return photoTree;
-            }
-        }
 
         Flickr flickr;
         protected Flickr Flickr
@@ -65,16 +52,5 @@ namespace ProductivityTools.PSFlickr.FlickrProxy
         //{
         //    Flickr.PhotosetsDelete(album.AlbumId.Id);
         //}
-
-        public void ReBuildPhotoTree()
-        {
-            PhotosetCollection x = Flickr.PhotosetsGetList();
-            foreach (Photoset item in x)
-            {
-                var photoList = Flickr.PhotosetsGetPhotos(item.PhotosetId);
-                photoTree.Add(item, photoList);
-            }
-        }
-
     }
 }

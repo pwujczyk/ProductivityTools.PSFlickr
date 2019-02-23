@@ -35,12 +35,6 @@ namespace ProductivityTools.PSFlickr.FlickrProxy
             return url;
         }
 
-        public List<string> GetCachedAlbums()
-        {
-            List<string> albumlist = this.PhotoTree.Select(x => x.Key.Title).ToList();
-            return albumlist;
-        }
-
         public List<Album> GetAlbums()
         {
             PhotosetCollection albums = Flickr.PhotosetsGetList();
@@ -103,24 +97,11 @@ namespace ProductivityTools.PSFlickr.FlickrProxy
             Flickr.PhotosDelete(photo.PhotoId.Id);
         }
 
-        public List<string> GetPhotosIdFromAlbum(string albumId)
-        {
-            var album = this.PhotoTree.Single(x => x.Key.PhotosetId == albumId);
-            var photoIds = album.Value.Select(x => x.PhotoId).ToList<string>();
-            return photoIds;
-        }
-
         public List<string> GetPhotosTitleFromAlbum(string albumId)
         {
             var album = Flickr.PhotosetsGetPhotos(albumId);
             var photoIds = album.Select(x => x.Title).ToList<string>();
             return photoIds;
-        }
-
-        public string AlbumPhotoByTitle(string title)
-        {
-            var coverPhoto = PhotoTree.SelectMany(x => x.Value).FirstOrDefault(photo => photo.Title == title);
-            return coverPhoto?.PhotoId;
         }
     }
 }
