@@ -92,9 +92,32 @@ namespace ProductivityTools.PSFlickr.Application
 
         public string AddPhotoToAlbumName(string path, string albumName)
         {
-            var albumId = this.manager.GetAlbumByName(albumName);
+            var albumId = GetAlbumByName(albumName);
             var photoid = AddPhotoToAlbumId(path, albumId);
             return photoid;
+        }
+
+        private Album GetAlbumByName(string albumName)
+        {
+            var albums = this.manager.GetAlbums();
+            var album = albums.SingleOrDefault(x => x.Name == albumName);
+            if (album == null) return null;
+            return album;
+        }
+
+        public Album GetAlbumById(string albumId)
+        {
+            var albums = this.manager.GetAlbums();
+            var album = albums.SingleOrDefault(x => x.AlbumId.Id==albumId);
+            if (album == null) return null;
+            return album;
+        }
+
+        private string GetAlbumCoverId(Album albumId)
+        {
+            var album = GetAlbumById(albumId.AlbumId.Id);
+            var coverPhoto = album.PrimaryPhoto.PhotoId.Id;
+            return coverPhoto;
         }
 
         public string AddPhotoToAlbumId(string path, Album album)
@@ -102,7 +125,7 @@ namespace ProductivityTools.PSFlickr.Application
             var photoId = manager.AddPhoto(path);
             manager.AddPhotoToAlbum(album, photoId);
 
-            var coverPhotoId = this.manager.GetAlbumCoverId(album);
+            var coverPhotoId = GetAlbumCoverId(album);
             if (coverPhotoId == CoverPhotoId)
             {
                 this.manager.SetCoverPhoto(album, photoId);
@@ -110,6 +133,8 @@ namespace ProductivityTools.PSFlickr.Application
             }
             return photoId;
         }
+
+      
 
         //public string AddPhoto(string path, string albumName)
         //{
@@ -156,7 +181,7 @@ namespace ProductivityTools.PSFlickr.Application
 
         private Album GetOrCreateAlbum(string name)
         {
-            Album albumId = manager.GetAlbumByName(name);
+            Album albumId = GetAlbumByName(name);
             if (albumId == null)
             {
                 albumId = CreateAlbumInternal(name);
@@ -167,7 +192,7 @@ namespace ProductivityTools.PSFlickr.Application
         public void DeleteAlbumByName(string name, bool removeAlsoPhotos)
         {
             WriteVerbose($"Removing album {name}");
-            Album album = this.manager.GetAlbumByName(name);
+            Album album = GetAlbumByName(name);
             DeleteAlbum(album, removeAlsoPhotos);
         }
 
@@ -213,7 +238,7 @@ namespace ProductivityTools.PSFlickr.Application
         public Album GetMaintananceAlbum()
         {
             var maintananceAlbumName = config.MaintenanceAlbumName;
-            var album = manager.GetAlbumByName(maintananceAlbumName);
+            var album = GetAlbumByName(maintananceAlbumName);
             if (album == null)
             {
                 album = CreateMaintananceAlbum();
@@ -253,7 +278,7 @@ namespace ProductivityTools.PSFlickr.Application
         {
             WriteVerbose($"Moving single photos to {name}");
             List<PSPhoto> singlePhotos = manager.GetSinglePhotos();
-            var albumId = manager.GetAlbumByName(name);
+            var albumId = GetAlbumByName(name);
             foreach (var photo in singlePhotos)
             {
                 manager.AddPhotoToAlbum(albumId, photo.PhotoId.Id);
@@ -278,7 +303,7 @@ namespace ProductivityTools.PSFlickr.Application
 
             var albumId = GetOrCreateAlbum(albumName);
             var photosTitle = manager.GetPhotosTitleFromAlbum(albumId.AlbumId.Id);
-            var allowedTypes = config.PhotoTypes.Split(' ', ',', ';').Select(x => x.ToLower()) ;
+            var allowedTypes = config.PhotoTypes.Split(' ', ',', ';').Select(x => x.ToLower());
 
             foreach (var file in files)
             {
@@ -302,7 +327,7 @@ namespace ProductivityTools.PSFlickr.Application
                 {
                     writeVerbose($"Not supported type {file.Extension}");
                 }
-              
+
             }
         }
     }

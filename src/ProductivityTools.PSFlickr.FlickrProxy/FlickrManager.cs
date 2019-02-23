@@ -25,7 +25,11 @@ namespace ProductivityTools.PSFlickr.FlickrProxy
         public Album CreateAlbum(string albumName, string coverPhotoId)
         {
             var album = Flickr.PhotosetsCreate(albumName, coverPhotoId);
-            return new Album(new AlbumId(album.PhotosetId), album.Title);
+            var result = new Album(
+               new AlbumId(album.PhotosetId),
+               album.Title,
+               new PSPhoto(new PhotoId(album.PrimaryPhotoId), album.PrimaryPhoto.Title));
+            return result;
         }
 
         public string GetAuthorizationUrl()
@@ -38,36 +42,12 @@ namespace ProductivityTools.PSFlickr.FlickrProxy
         public List<Album> GetAlbums()
         {
             PhotosetCollection albums = Flickr.PhotosetsGetList();
-            List<Album> albumlist = albums.Select(x => new Album(new AlbumId(x.PhotosetId), x.Title)).ToList();
+            List<Album> albumlist = albums.Select(x => 
+            new Album(
+                new AlbumId(x.PhotosetId), 
+                x.Title, 
+                new PSPhoto(new PhotoId(x.PrimaryPhotoId), x.PrimaryPhoto.Title))).ToList();
             return albumlist;
-        }
-
-        public Photoset GetAlbumById(string albumId)
-        {
-            PhotosetCollection photocollection = Flickr.PhotosetsGetList();
-            Photoset album = photocollection.Single(x => x.PhotosetId == albumId);
-            return album;
-        }
-
-        //public Album GetAlbumId(string albumName)
-        //{
-        //    var album = this.PhotoTree.SingleOrDefault(x => x.Key.Title == albumName);
-        //    return album.Key?.PhotosetId;
-        //}
-
-        public Album GetAlbumByName(string albumName)
-        {
-            PhotosetCollection photocollection = Flickr.PhotosetsGetList();
-            Photoset album = photocollection.SingleOrDefault(x => x.Title == albumName);
-            if (album == null) return null;
-            return new Album(new AlbumId(album.PhotosetId), album.Title);
-        }
-
-        public string GetAlbumCoverId(Album albumId)
-        {
-            var album = GetAlbumById(albumId.AlbumId.Id);
-            var coverPhoto = album.PrimaryPhoto.PhotoId;
-            return coverPhoto;
         }
 
         public void SetCoverPhoto(Album albumId, string photoId)
