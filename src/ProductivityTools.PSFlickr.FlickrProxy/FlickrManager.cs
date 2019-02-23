@@ -12,10 +12,6 @@ namespace ProductivityTools.PSFlickr.FlickrProxy
 {
     public class FlickrManager : FlickrManagerCore
     {
-
-        static OAuthRequestToken requestToken;
-        static OAuthAccessToken oauthAccessToken;
-
         public string AddPhoto(string path)
         {
             var photoId = Flickr.UploadPicture(path);
@@ -24,42 +20,40 @@ namespace ProductivityTools.PSFlickr.FlickrProxy
 
         public Album CreateAlbum(string albumName, string coverPhotoId)
         {
-            var album = Flickr.PhotosetsCreate(albumName, coverPhotoId);
-            var result = new Album(
-               new AlbumId(album.PhotosetId),
-               album.Title,
-               new PSPhoto(new PhotoId(album.PrimaryPhotoId), album.PrimaryPhoto.Title));
+            var photoset = Flickr.PhotosetsCreate(albumName, coverPhotoId);
+            Album result = Album.CreateAlbum(photoset);
             return result;
-        }
-
-        public string GetAuthorizationUrl()
-        {
-            var requestToken = Flickr.OAuthGetRequestToken("oob");
-            string url = Flickr.OAuthCalculateAuthorizationUrl(requestToken.Token, AuthLevel.Delete);
-            return url;
         }
 
         public List<Album> GetAlbums()
         {
             PhotosetCollection albums = Flickr.PhotosetsGetList();
-            List<Album> albumlist = albums.Select(x => 
-            new Album(
-                new AlbumId(x.PhotosetId), 
-                x.Title, 
-                new PSPhoto(new PhotoId(x.PrimaryPhotoId), x.PrimaryPhoto.Title))).ToList();
+            List<Album> albumlist = albums.Select(x => Album.CreateAlbum(x)).ToList();
             return albumlist;
         }
+
+        //not used as removing all photos in ablum removes automatically album
+        //public void DeleteAlbum(Album album)
+        //{
+        //    Flickr.PhotosetsDelete(album.AlbumId.Id);
+        //}
 
         public void SetCoverPhoto(Album albumId, string photoId)
         {
             Flickr.PhotosetsSetPrimaryPhoto(albumId.AlbumId.Id, photoId);
         }
 
-        public void GetAndSaveAccessToken(string verificationCode)
+        public List<PSPhoto> GetSinglePhotos()
         {
-            oauthAccessToken = Flickr.OAuthGetAccessToken(requestToken, verificationCode);
-            config.OauthAccessTokenToken = oauthAccessToken.Token;
-            config.OauthAccessTokenTokenSecret = oauthAccessToken.TokenSecret;
+            var photos = Flickr.PhotosGetNotInSet();
+            var result = photos.Select(x => new PSPhoto(new PhotoId(x.PhotoId), x.Title)).ToList();
+            return result;
+        }
+
+        public List<PSPhoto> GetPhotos(Album album)
+        {
+            var photos = Flickr.PhotosetsGetPhotos(album.AlbumId.Id);
+            return photos.Select(x => new PSPhoto(new PhotoId(x.PhotoId), x.Title)).ToList();
         }
 
         public void AddPhotoToAlbum(Album album, string photoId)

@@ -13,6 +13,8 @@ namespace ProductivityTools.PSFlickr.FlickrProxy
     public class FlickrManagerCore
     {
         protected Config config = new Config();
+        static OAuthRequestToken requestToken;
+        static OAuthAccessToken oauthAccessToken;
 
         Flickr flickr;
         protected Flickr Flickr
@@ -34,23 +36,21 @@ namespace ProductivityTools.PSFlickr.FlickrProxy
             return new Flickr(config.ApiKey, config.SharedSecret, token);
         }
 
-        public List<PSPhoto> GetSinglePhotos()
+        public void GetAndSaveAccessToken(string verificationCode)
         {
-            var photos = Flickr.PhotosGetNotInSet();
-            var result = photos.Select(x => new PSPhoto(new PhotoId(x.PhotoId), x.Title)).ToList();
-            return result;
+            oauthAccessToken = Flickr.OAuthGetAccessToken(requestToken, verificationCode);
+            config.OauthAccessTokenToken = oauthAccessToken.Token;
+            config.OauthAccessTokenTokenSecret = oauthAccessToken.TokenSecret;
         }
 
-        public List<PSPhoto> GetPhotos(Album album)
+        public string GetAuthorizationUrl()
         {
-            var photos=Flickr.PhotosetsGetPhotos(album.AlbumId.Id);
-            return photos.Select(x => new PSPhoto(new PhotoId(x.PhotoId), x.Title)).ToList();
+            var requestToken = Flickr.OAuthGetRequestToken("oob");
+            string url = Flickr.OAuthCalculateAuthorizationUrl(requestToken.Token, AuthLevel.Delete);
+            return url;
         }
 
-        //not used as removing all photos in ablum removes automatically album
-        //public void DeleteAlbum(Album album)
-        //{
-        //    Flickr.PhotosetsDelete(album.AlbumId.Id);
-        //}
+
+
     }
 }

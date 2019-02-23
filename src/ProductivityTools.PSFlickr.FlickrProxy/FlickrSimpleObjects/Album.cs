@@ -1,4 +1,5 @@
-﻿using ProductivityTools.PSFlickr.FlickrProxy.Ids;
+﻿using FlickrNet;
+using ProductivityTools.PSFlickr.FlickrProxy.Ids;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,15 @@ namespace ProductivityTools.PSFlickr.FlickrProxy.FlickrSimpleObjects
             this.AlbumId = albumId;
             this.Name = name;
             this.PrimaryPhoto = primaryPhoto;
+        }
+
+        public static Album CreateAlbum(Photoset photoset)
+        {
+            var result = new Album(
+            new AlbumId(photoset.PhotosetId),
+            photoset.Title,
+            new PSPhoto(new PhotoId(photoset.PrimaryPhotoId), photoset.PrimaryPhoto.Title));
+            return result;
         }
     }
 }
