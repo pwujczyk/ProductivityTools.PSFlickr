@@ -48,12 +48,6 @@ namespace ProductivityTools.PSFlickr.FlickrProxy
             return albumlist;
         }
 
-        public List<string> GetPhotosNotInAlbum()
-        {
-            var result = SinglePhotos.Select(x => x.PhotoId).ToList();
-            return result;
-        }
-
         public Photoset GetAlbumById(string albumId)
         {
             PhotosetCollection photocollection = Flickr.PhotosetsGetList();
@@ -127,12 +121,6 @@ namespace ProductivityTools.PSFlickr.FlickrProxy
         {
             var coverPhoto = PhotoTree.SelectMany(x => x.Value).FirstOrDefault(photo => photo.Title == title);
             return coverPhoto?.PhotoId;
-        }
-
-        public string SinglePhotoByTitle(string title)
-        {
-            var singlePhoto = SinglePhotos.FirstOrDefault(x => x.Title == title);
-            return singlePhoto?.PhotoId;
         }
     }
 }

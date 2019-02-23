@@ -27,33 +27,6 @@ namespace ProductivityTools.PSFlickr.FlickrProxy
             }
         }
 
-        private List<Photo> singlePhotos;
-        protected List<Photo> SinglePhotos
-        {
-            get
-            {
-                if (singlePhotos==null)
-                {
-                    RebuildSinglePhotos();
-                }
-                
-                return singlePhotos;
-            }
-        }
-
-        private void RebuildSinglePhotos()
-        {
-            if (singlePhotos==null)
-            {
-                singlePhotos = new List<Photo>();
-            }
-            var photos = Flickr.PhotosGetNotInSet();
-            foreach(var photo in photos)
-            {
-                this.singlePhotos.Add(photo);
-            }
-        }
-
         Flickr flickr;
         protected Flickr Flickr
         {
@@ -74,16 +47,24 @@ namespace ProductivityTools.PSFlickr.FlickrProxy
             return new Flickr(config.ApiKey, config.SharedSecret, token);
         }
 
+        public List<PSPhoto> GetSinglePhotos()
+        {
+            var photos = Flickr.PhotosGetNotInSet();
+            var result = photos.Select(x => new PSPhoto(new PhotoId(x.PhotoId), x.Title)).ToList();
+            return result;
+        }
+
         public List<PSPhoto> GetPhotos(Album album)
         {
             var photos=Flickr.PhotosetsGetPhotos(album.AlbumId.Id);
             return photos.Select(x => new PSPhoto(new PhotoId(x.PhotoId), x.Title)).ToList();
         }
 
-        public void DeleteAlbum(Album album)
-        {
-            Flickr.PhotosetsDelete(album.AlbumId.Id);
-        }
+        //not used as removing all photos in ablum removes automatically album
+        //public void DeleteAlbum(Album album)
+        //{
+        //    Flickr.PhotosetsDelete(album.AlbumId.Id);
+        //}
 
         public void ReBuildPhotoTree()
         {

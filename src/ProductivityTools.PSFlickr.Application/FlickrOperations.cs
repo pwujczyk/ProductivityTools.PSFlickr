@@ -252,11 +252,11 @@ namespace ProductivityTools.PSFlickr.Application
         public void MoveSinglePhotosToAlbum(string name)
         {
             WriteVerbose($"Moving single photos to {name}");
-            var singlePhotos = manager.GetPhotosNotInAlbum();
+            List<PSPhoto> singlePhotos = manager.GetSinglePhotos();
             var albumId = manager.GetAlbumByName(name);
             foreach (var photo in singlePhotos)
             {
-                manager.AddPhotoToAlbum(albumId, photo);
+                manager.AddPhotoToAlbum(albumId, photo.PhotoId.Id);
             }
         }
 
