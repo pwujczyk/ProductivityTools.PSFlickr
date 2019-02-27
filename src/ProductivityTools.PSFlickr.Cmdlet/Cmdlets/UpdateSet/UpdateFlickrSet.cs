@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace ProductivityTools.PSFlickr.Cmdlet.Cmdlets.UpdateSet
 {
-    [Cmdlet("Update", "FlickrSet")]
-    public class UpdateFlickrSet : FlickrCmdletsBase
+    [Cmdlet("Sync", "FlickrSet")]
+    public class SyncFickrSet : FlickrCmdletsBase
     {
         [Parameter(Mandatory = false, Position = 0)]
         public string Directory { get; set; }
 
-        public UpdateFlickrSet()
+        public SyncFickrSet()
         {
             this.AddCommand(new UpdateAlbumsAndPushPhotos(this));
         }

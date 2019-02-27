@@ -43,17 +43,17 @@ namespace ProductivityTools.PSFlickr.FlickrProxy
             Flickr.PhotosetsSetPrimaryPhoto(albumId.AlbumId.Id, photoId);
         }
 
-        public List<PSPhoto> GetSinglePhotos()
+        public List<FlickrPhoto> GetSinglePhotos()
         {
             var photos = Flickr.PhotosGetNotInSet();
-            var result = photos.Select(x => new PSPhoto(new PhotoId(x.PhotoId), x.Title)).ToList();
+            var result = photos.Select(x => new FlickrPhoto(new FlickrPhotoId(x.PhotoId), x.Title)).ToList();
             return result;
         }
 
-        public List<PSPhoto> GetPhotos(Album album)
+        public List<FlickrPhoto> GetPhotos(Album album)
         {
             var photos = Flickr.PhotosetsGetPhotos(album.AlbumId.Id);
-            return photos.Select(x => new PSPhoto(new PhotoId(x.PhotoId), x.Title)).ToList();
+            return photos.Select(x => new FlickrPhoto(new FlickrPhotoId(x.PhotoId), x.Title)).ToList();
         }
 
         public void AddPhotoToAlbum(Album album, string photoId)
@@ -66,16 +66,16 @@ namespace ProductivityTools.PSFlickr.FlickrProxy
             Flickr.PhotosetsRemovePhoto(albumId.AlbumId.Id, photoId);
         }
 
-        public void RemovePhoto(PSPhoto photo)
+        public void RemovePhoto(FlickrPhoto photo)
         {
             Flickr.PhotosDelete(photo.PhotoId.Id);
         }
 
-        public List<string> GetPhotosTitleFromAlbum(string albumId)
-        {
-            var album = Flickr.PhotosetsGetPhotos(albumId);
-            var photoIds = album.Select(x => x.Title).ToList<string>();
-            return photoIds;
-        }
+        //public List<string> GetPhotosTitleFromAlbum(string albumId)
+        //{
+        //    var album = Flickr.PhotosetsGetPhotos(albumId);
+        //    var photoIds = album.Select(x => x.Title).ToList<string>();
+        //    return photoIds;
+        //}
     }
 }

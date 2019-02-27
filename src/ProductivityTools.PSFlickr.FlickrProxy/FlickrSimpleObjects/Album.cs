@@ -13,13 +13,15 @@ namespace ProductivityTools.PSFlickr.FlickrProxy.FlickrSimpleObjects
         public AlbumId AlbumId { get; set; }
         public string Name { get; set; }
 
-        public PSPhoto PrimaryPhoto { get; set; }
+        public FlickrPhotoId PrimaryPhotoId { get; set; }
 
-        public Album(AlbumId albumId, string name, PSPhoto primaryPhoto)
+        //public PSPhoto PrimaryPhoto { get; set; }
+
+        public Album(AlbumId albumId, string name, FlickrPhotoId primaryPhotoId)
         {
             this.AlbumId = albumId;
             this.Name = name;
-            this.PrimaryPhoto = primaryPhoto;
+            this.PrimaryPhotoId = primaryPhotoId;
         }
 
         public static Album CreateAlbum(Photoset photoset)
@@ -27,7 +29,7 @@ namespace ProductivityTools.PSFlickr.FlickrProxy.FlickrSimpleObjects
             var result = new Album(
             new AlbumId(photoset.PhotosetId),
             photoset.Title,
-            new PSPhoto(new PhotoId(photoset.PrimaryPhotoId), photoset.PrimaryPhoto.Title));
+            new FlickrPhotoId(photoset.PrimaryPhotoId));
             return result;
         }
     }

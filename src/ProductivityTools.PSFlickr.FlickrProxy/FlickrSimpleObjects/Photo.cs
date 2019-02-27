@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace ProductivityTools.PSFlickr.FlickrProxy.FlickrSimpleObjects
 {
-    public class PSPhoto
+    public class FlickrPhoto
     {
-        public PhotoId PhotoId { get; set; }
+        public FlickrPhotoId PhotoId { get; set; }
 
         public string Title { get; set; }
 
-        public PSPhoto(PhotoId photoId, string title)
+        public FlickrPhoto(FlickrPhotoId photoId, string title)
         {
             this.PhotoId = photoId;
             this.Title = title;
