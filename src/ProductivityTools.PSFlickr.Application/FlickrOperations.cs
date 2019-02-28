@@ -13,6 +13,7 @@ namespace ProductivityTools.PSFlickr.Application
 {
     public class FlickrOperations
     {
+        string Cover = "_Cover";
         Config config = new Config();
         FlickrManager manager = new FlickrManager();
 
@@ -36,16 +37,16 @@ namespace ProductivityTools.PSFlickr.Application
             }
         }
 
-        private string coverPhotoId;
-        private string CoverPhotoId
+        private FlickrPhotoId coverPhotoId;
+        private FlickrPhotoId CoverPhotoId
         {
             get
             {
 
-                if (string.IsNullOrEmpty(coverPhotoId))
+                if (coverPhotoId != null)
                 {
                     coverPhotoId = GetCoverPhoto();
-                    if (string.IsNullOrEmpty(coverPhotoId))
+                    if (coverPhotoId != null)
                     {
                         coverPhotoId = UploadCoverPhoto();
                     }
@@ -64,7 +65,7 @@ namespace ProductivityTools.PSFlickr.Application
             this.WriteVerbose = writeVerbose;
         }
 
-        private string UploadCoverPhoto()
+        private FlickrPhotoId UploadCoverPhoto()
         {
             var assemblyLocation = System.Reflection.Assembly.GetCallingAssembly().Location;
             var assemblyLocationDirectory = System.IO.Path.GetDirectoryName(assemblyLocation);
@@ -87,14 +88,14 @@ namespace ProductivityTools.PSFlickr.Application
         public string AddPhoto(string path)
         {
             var photoId = manager.AddPhoto(path);
-            return photoId;
+            return photoId.Id;
         }
 
         public string AddPhotoToAlbumName(string path, string albumName)
         {
             var albumId = GetAlbumByName(albumName);
             var photoid = AddPhotoToAlbumId(path, albumId);
-            return photoid;
+            return photoid.Id;
         }
 
         private Album GetAlbumByName(string albumName)
@@ -113,14 +114,14 @@ namespace ProductivityTools.PSFlickr.Application
             return album;
         }
 
-        private string GetAlbumCoverId(Album albumId)
+        private FlickrPhotoId GetAlbumCoverId(Album albumId)
         {
             var album = GetAlbumById(albumId.AlbumId.Id);
             var coverPhoto = album.PrimaryPhotoId.Id;
-            return coverPhoto;
+            return new FlickrPhotoId(coverPhoto);
         }
 
-        public string AddPhotoToAlbumId(string path, Album album)
+        public FlickrPhotoId AddPhotoToAlbumId(string path, Album album)
         {
             var photoId = manager.AddPhoto(path);
             manager.AddPhotoToAlbum(album, photoId);
@@ -210,15 +211,19 @@ namespace ProductivityTools.PSFlickr.Application
 
         public void ClearFlickr()
         {
-            var albums = this.manager.GetAlbums();
-            foreach (var album in albums)
-            {
-                DeleteAlbum(album, true);
-            }
             var temporaryAlbum = DateTime.Now.ToLongTimeString();
             CreateAlbum(temporaryAlbum);
             MoveSinglePhotosToAlbum(temporaryAlbum);
-            DeleteAlbumByName(temporaryAlbum, true);
+
+            var albums = this.manager.GetAlbums();
+            foreach (var album in albums)
+            {
+                var checkAlbum=GetAlbumById(album.AlbumId.Id);
+                if (checkAlbum != null)
+                {//if we remove all pictures in previous iteration, album won't exist anymore
+                    DeleteAlbum(album, true);
+                }
+            }
         }
 
         public void DeletePhotos(List<FlickrPhoto> photos, Album album)
@@ -253,16 +258,16 @@ namespace ProductivityTools.PSFlickr.Application
             return album;
         }
 
-        public string GetCoverPhoto()
+        public FlickrPhotoId GetCoverPhoto()
         {
             string title = "PSFlickrCover";
             var maintanceAlbum = GetMaintananceAlbum();
             var photosTitle = manager.GetPhotos(maintanceAlbum);
             var flickCover = photosTitle.FirstOrDefault(x => x.Title == title);
-            var flickCoverId = flickCover.PhotoId.Id;
+            var flickCoverId = flickCover.PhotoId;
 
             // var photoInAlbum = manager.AlbumPhotoByTitle(title);
-            if (string.IsNullOrEmpty(flickCoverId))
+            if (flickCoverId != null)
             {
                 flickCoverId = UploadCoverPhoto();
                 manager.AddPhotoToAlbum(maintanceAlbum, flickCoverId);
@@ -281,7 +286,7 @@ namespace ProductivityTools.PSFlickr.Application
             var albumId = GetAlbumByName(name);
             foreach (var photo in singlePhotos)
             {
-                manager.AddPhotoToAlbum(albumId, photo.PhotoId.Id);
+                manager.AddPhotoToAlbum(albumId, photo.PhotoId);
             }
         }
 
@@ -319,8 +324,8 @@ namespace ProductivityTools.PSFlickr.Application
                     string path = file.FullName;
                     var fileName = System.IO.Path.GetFileNameWithoutExtension(path);
 
-                    var photoId = photos.Any(x => x.Title == fileName);
-                    if (photoId)
+                    var photoId = photos.SingleOrDefault(x => x.Title == fileName);
+                    if (photoId != null)
                     {
                         WriteVerbose($"Photo {fileName} already exists in {albumName}");
                     }
@@ -330,7 +335,14 @@ namespace ProductivityTools.PSFlickr.Application
                         AddPhotoToAlbumId(file.FullName, album);
                     }
 
-                    SetPrimaryPhotoInDirectory(primaryPhoto, path);
+                    if (primaryPhoto != null)
+                    {
+                        SetPrimaryPhotoInDirectory(primaryPhoto, path);
+                    }
+                    else
+                    {
+                        SetCoverPhoto(album, photoId, path);
+                    }
                 }
                 else
                 {
@@ -340,14 +352,24 @@ namespace ProductivityTools.PSFlickr.Application
             }
         }
 
+
+        private void SetCoverPhoto(Album album, FlickrPhoto photoId, string path)
+        {
+            var fileName = System.IO.Path.GetFileNameWithoutExtension(path);
+            if (fileName.EndsWith(Cover))
+            {
+                this.manager.SetCoverPhoto(album, photoId.PhotoId);
+            }
+        }
+
         private void SetPrimaryPhotoInDirectory(FlickrPhoto primaryPhoto, string path)
         {
-            string cover = "_Cover";
+
             var directory = Path.GetDirectoryName(path);
             var extension = Path.GetExtension(path);
 
             var fileName = System.IO.Path.GetFileNameWithoutExtension(path);
-            if (fileName == primaryPhoto.Title + cover)
+            if (fileName == primaryPhoto.Title + Cover)
             {
                 if (fileName.StartsWith(primaryPhoto.Title))
                 {
@@ -359,14 +381,14 @@ namespace ProductivityTools.PSFlickr.Application
                 if (fileName.StartsWith(primaryPhoto.Title))
                 {
                     writeVerbose($"Photo {fileName} will be cover photo setting it.");
-                    var destName = Path.Combine(directory, fileName + cover + extension);
+                    var destName = Path.Combine(directory, fileName + Cover + extension);
                     System.IO.File.Move(path, destName);
                 }
 
-                if (fileName.EndsWith(cover))
+                if (fileName.EndsWith(Cover))
                 {
                     writeVerbose($"Photo {fileName} was cover photo before, resetting it.");
-                    var destName = Path.Combine(directory, fileName.Replace(cover, string.Empty) + extension);
+                    var destName = Path.Combine(directory, fileName.Replace(Cover, string.Empty) + extension);
                     System.IO.File.Move(path, destName);
                 }
             }

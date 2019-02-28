@@ -12,15 +12,15 @@ namespace ProductivityTools.PSFlickr.FlickrProxy
 {
     public class FlickrManager : FlickrManagerCore
     {
-        public string AddPhoto(string path)
+        public FlickrPhotoId AddPhoto(string path)
         {
             var photoId = Flickr.UploadPicture(path);
-            return photoId;
+            return new FlickrPhotoId(photoId);
         }
 
-        public Album CreateAlbum(string albumName, string coverPhotoId)
+        public Album CreateAlbum(string albumName, FlickrPhotoId coverPhotoId)
         {
-            var photoset = Flickr.PhotosetsCreate(albumName, coverPhotoId);
+            var photoset = Flickr.PhotosetsCreate(albumName, coverPhotoId.Id);
             Album result = Album.CreateAlbum(photoset);
             return result;
         }
@@ -38,9 +38,9 @@ namespace ProductivityTools.PSFlickr.FlickrProxy
         //    Flickr.PhotosetsDelete(album.AlbumId.Id);
         //}
 
-        public void SetCoverPhoto(Album albumId, string photoId)
+        public void SetCoverPhoto(Album albumId, FlickrPhotoId photoId)
         {
-            Flickr.PhotosetsSetPrimaryPhoto(albumId.AlbumId.Id, photoId);
+            Flickr.PhotosetsSetPrimaryPhoto(albumId.AlbumId.Id, photoId.Id);
         }
 
         public List<FlickrPhoto> GetSinglePhotos()
@@ -56,14 +56,14 @@ namespace ProductivityTools.PSFlickr.FlickrProxy
             return photos.Select(x => new FlickrPhoto(new FlickrPhotoId(x.PhotoId), x.Title)).ToList();
         }
 
-        public void AddPhotoToAlbum(Album album, string photoId)
+        public void AddPhotoToAlbum(Album album, FlickrPhotoId photoId)
         {
-            Flickr.PhotosetsAddPhoto(album.AlbumId.Id, photoId);
+            Flickr.PhotosetsAddPhoto(album.AlbumId.Id, photoId.Id);
         }
 
-        public void RemovePhotoFromAlbum(string photoId, Album albumId)
+        public void RemovePhotoFromAlbum(FlickrPhotoId photoId, Album albumId)
         {
-            Flickr.PhotosetsRemovePhoto(albumId.AlbumId.Id, photoId);
+            Flickr.PhotosetsRemovePhoto(albumId.AlbumId.Id, photoId.Id);
         }
 
         public void RemovePhoto(FlickrPhoto photo)
