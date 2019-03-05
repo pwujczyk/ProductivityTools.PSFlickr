@@ -218,11 +218,24 @@ namespace ProductivityTools.PSFlickr.Application
             var albums = this.manager.GetAlbums();
             foreach (var album in albums)
             {
-                var checkAlbum=GetAlbumById(album.AlbumId.Id);
+                var checkAlbum = GetAlbumById(album.AlbumId.Id);
                 if (checkAlbum != null)
                 {//if we remove all pictures in previous iteration, album won't exist anymore
-                    DeleteAlbum(album, true);
+                    DeleteAlbumExceptionSafe(album, true);
                 }
+            }
+        }
+
+        private void DeleteAlbumExceptionSafe(Album album, bool removeAlsoPhotos)
+        {
+            try
+            {
+                DeleteAlbum(album, removeAlsoPhotos);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
             }
         }
 
@@ -312,9 +325,46 @@ namespace ProductivityTools.PSFlickr.Application
             string albumName = directory.Name;
             FileInfo[] files = directory.GetFiles();
 
-            var album = GetOrCreateAlbum(albumName);
-            var photos = manager.GetPhotos(album);
-            var primaryPhoto = PrimaryPhoto(photos, album.PrimaryPhotoId);
+            var onlineAlbum = GetOrCreateAlbum(albumName);
+            var photosInOnlineAlbum = manager.GetPhotos(onlineAlbum);
+            var onlinePrimaryPhoto = PrimaryPhoto(photosInOnlineAlbum, onlineAlbum.PrimaryPhotoId);
+            var localPrimaryPhotos = files.Where(x => Path.GetFileNameWithoutExtension(x.FullName).EndsWith(Cover));
+            if (localPrimaryPhotos.Count() > 1)
+            {
+                ClearAllCoverPhotos(files);
+                files = directory.GetFiles();
+                localPrimaryPhotos = files.Where(x => Path.GetFileNameWithoutExtension(x.FullName).EndsWith(Cover));
+            }
+
+            var localPrimaryPhoto = localPrimaryPhotos.SingleOrDefault();
+            if (onlineAlbum.PrimaryPhotoId.Id == null && localPrimaryPhoto != null)
+            {
+                //updload local photo, cover will be set automatically as this is first photo
+                FlickrPhotoId onlinePhotoId = AddPhotoToAlbumId(localPrimaryPhotos.Single().FullName, onlineAlbum);
+                photosInOnlineAlbum = manager.GetPhotos(onlineAlbum);
+            }
+
+            if (onlineAlbum.PrimaryPhotoId.Id==null && localPrimaryPhoto==null)
+            {
+                var candidateForOnlinePrimaryPhoto = files.FirstOrDefault();
+                if (candidateForOnlinePrimaryPhoto!=null)
+                {
+                    RenameFileToBeCover(candidateForOnlinePrimaryPhoto);
+                    files = directory.GetFiles();
+                }
+            }
+
+            if (onlineAlbum.PrimaryPhotoId.Id != null)
+            {
+                var onlinePrimaryPhotoWithoutCover = onlinePrimaryPhoto.Title.Replace(Cover, string.Empty);
+                FileInfo diskPhotoToSetAsCover = files.FirstOrDefault(x => Path.GetFileNameWithoutExtension(x.FullName) == onlinePrimaryPhotoWithoutCover);
+                if (diskPhotoToSetAsCover != null)
+                {
+                    ClearAllCoverPhotos(files);
+                    RenameFileToBeCover(diskPhotoToSetAsCover);
+                }
+            }
+
             var allowedTypes = config.PhotoTypes.Split(' ', ',', ';').Select(x => x.ToLower());
 
             foreach (var file in files)
@@ -324,34 +374,49 @@ namespace ProductivityTools.PSFlickr.Application
                     string path = file.FullName;
                     var fileName = System.IO.Path.GetFileNameWithoutExtension(path);
 
-                    var photoId = photos.SingleOrDefault(x => x.Title == fileName);
-                    if (photoId != null)
-                    {
-                        WriteVerbose($"Photo {fileName} already exists in {albumName}");
-                    }
-                    else
+                    var onlinePhoto = photosInOnlineAlbum.SingleOrDefault(x => x.Title == fileName);
+                    if (onlinePhoto == null)
                     {
                         WriteVerbose($"Pushing {file.FullName} to album {albumName}");
-                        AddPhotoToAlbumId(file.FullName, album);
-                    }
+                        FlickrPhotoId onlinePhotoId = AddPhotoToAlbumId(file.FullName, onlineAlbum);
 
-                    if (primaryPhoto != null)
-                    {
-                        SetPrimaryPhotoInDirectory(primaryPhoto, path);
                     }
                     else
                     {
-                        SetCoverPhoto(album, photoId, path);
+                        WriteVerbose($"Photo {fileName} already exists in {albumName}");
                     }
                 }
                 else
                 {
                     writeVerbose($"Not supported type {file.Extension}");
                 }
-
             }
+
+
+            //if (onlinePrimaryPhoto == null)
+            //{
+            //    SetCoverPhoto(onlineAlbum, onlinePhoto, path);
+            //}
+            //else
+            //{
+            //    SetPrimaryPhotoInDirectory(onlinePrimaryPhoto, path);
+            //}
         }
 
+        private void ClearAllCoverPhotos(FileInfo[] files)
+        {
+            var coverFiles = files.Where(x => Path.GetFileNameWithoutExtension(x.FullName).EndsWith(Cover));
+            foreach (var coverFile in coverFiles)
+            {
+                var fileName = coverFile.FullName;
+                //if (fileName.EndsWith(Cover))
+                //{
+                writeVerbose($"Photo {fileName} was cover photo before, resetting it.");
+                var destName = fileName.Replace(Cover, string.Empty);
+                System.IO.File.Move(fileName, destName);
+                //}
+            }
+        }
 
         private void SetCoverPhoto(Album album, FlickrPhoto photoId, string path)
         {
@@ -362,36 +427,38 @@ namespace ProductivityTools.PSFlickr.Application
             }
         }
 
-        private void SetPrimaryPhotoInDirectory(FlickrPhoto primaryPhoto, string path)
-        {
+        //private void SetPrimaryPhotoInDirectory(FlickrPhoto primaryPhoto, FileInfo fileInfo)
+        //{
+      
+        //    //if (fileName == primaryPhoto.Title + Cover)
+        //    //{
+        //    //    if (fileName.StartsWith(primaryPhoto.Title))
+        //    //    {
+        //    //        writeVerbose($"Directory has already cover photo setup");
+        //    //    }
+        //    //}
+        //    //else
+        //    //{
+        //    if (fileName.StartsWith(primaryPhoto.Title))
+        //    {
+        //        writeVerbose($"Photo {fileName} will be cover photo setting it.");
+        //        var destName = Path.Combine(directory, fileName + Cover + extension);
+        //        System.IO.File.Move(path, destName);
+        //    }
 
+
+        //    //}
+        //}
+
+        private void RenameFileToBeCover(FileInfo fileInfo)
+        {
+            var path = fileInfo.FullName;
             var directory = Path.GetDirectoryName(path);
             var extension = Path.GetExtension(path);
-
             var fileName = System.IO.Path.GetFileNameWithoutExtension(path);
-            if (fileName == primaryPhoto.Title + Cover)
-            {
-                if (fileName.StartsWith(primaryPhoto.Title))
-                {
-                    writeVerbose($"Directory has already cover photo setup");
-                }
-            }
-            else
-            {
-                if (fileName.StartsWith(primaryPhoto.Title))
-                {
-                    writeVerbose($"Photo {fileName} will be cover photo setting it.");
-                    var destName = Path.Combine(directory, fileName + Cover + extension);
-                    System.IO.File.Move(path, destName);
-                }
-
-                if (fileName.EndsWith(Cover))
-                {
-                    writeVerbose($"Photo {fileName} was cover photo before, resetting it.");
-                    var destName = Path.Combine(directory, fileName.Replace(Cover, string.Empty) + extension);
-                    System.IO.File.Move(path, destName);
-                }
-            }
+            writeVerbose($"Photo {fileName} will be cover photo setting it.");
+            var destName = Path.Combine(directory, fileName + Cover + extension);
+            File.Move(path, destName);
         }
     }
 }
