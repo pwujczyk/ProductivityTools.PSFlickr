@@ -1,4 +1,5 @@
 ﻿using ProductivityTools.PSFlickr.Application;
+using ProductivityTools.PSFlickr.ApplicationClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,8 +17,9 @@ namespace ProductivityTools.PSFlickr.Cmdlet.Cmdlets.UpdateSet.Commands
         protected override void Invoke()
         {
             FlickrOperations flickrOperations = FlickrOperationsFactory.GetFlickrOperations(WriteOutput);
+            FlickrSync flickrSync = new FlickrSync(WriteOutput);
             var absolutepath = this.Cmdlet.GetPath(this.Cmdlet.Directory ?? string.Empty);
-            flickrOperations.CreateAlbumsFromDirectories(absolutepath);
+            flickrSync.CreateAlbumsFromDirectories(absolutepath);
         }
     }
 }

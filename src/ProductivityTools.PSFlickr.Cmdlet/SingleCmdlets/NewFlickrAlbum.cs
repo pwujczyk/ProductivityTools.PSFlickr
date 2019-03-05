@@ -1,4 +1,5 @@
 ﻿using ProductivityTools.PSFlickr.Application;
+using ProductivityTools.PSFlickr.ApplicationClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,8 @@ namespace ProductivityTools.PSFlickr.Cmdlet.SingleCmdlets
         protected override void ProcessRecord()
         {
             FlickrOperations autentication = FlickrOperationsFactory.GetFlickrOperations();
-            var albums = autentication.CreateAlbum(this.Name);
+            CommonOperations commonOperations = new CommonOperations();
+            var albums = commonOperations.CreateAlbum(this.Name);
             WriteObject(albums);
         }
     }

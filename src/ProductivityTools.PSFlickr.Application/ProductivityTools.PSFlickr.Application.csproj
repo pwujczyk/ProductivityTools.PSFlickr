@@ -40,8 +40,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseOperations.cs" />
+    <Compile Include="CommonOperations.cs" />
     <Compile Include="FlickrOperations.cs" />
+    <Compile Include="FlickrSync.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SyncOneDirectory.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="PSFlickrCover.jpg">
