@@ -43,7 +43,7 @@
     <Compile Include="BaseOperations.cs" />
     <Compile Include="CommonOperations.cs" />
     <Compile Include="FlickrOperations.cs" />
-    <Compile Include="FlickrSync.cs" />
+    <Compile Include="SyncMultipleDirectories.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SyncOneDirectory.cs" />
   </ItemGroup>

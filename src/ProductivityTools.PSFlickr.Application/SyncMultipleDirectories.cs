@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ProductivityTools.PSFlickr.ApplicationClient
 {
-    public class FlickrSync : BaseOperations
+    public class SyncMultipleDirectories : BaseOperations
     {
       //  FlickrOperations FlickrOperations;
         protected CommonOperations commonOperations = new CommonOperations();
@@ -29,7 +29,7 @@ namespace ProductivityTools.PSFlickr.ApplicationClient
             }
         }
 
-        public FlickrSync(Action<string> writeVerbose)
+        public SyncMultipleDirectories(Action<string> writeVerbose)
         {
             this.WriteVerbose = writeVerbose;
           //  this.FlickrOperations = flickrOperations;
