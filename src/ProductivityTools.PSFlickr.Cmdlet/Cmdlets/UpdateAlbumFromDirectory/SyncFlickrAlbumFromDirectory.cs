@@ -8,15 +8,15 @@ using System.Threading.Tasks;
 
 namespace ProductivityTools.PSFlickr.Cmdlet.Cmdlets.NewAlbumFromDirectory
 {
-    [Cmdlet("Update", "FlickrAlbumFromDirectory")]
-    public class NewFlickrAlbumFromDirectory : FlickrCmdletsBase
+    [Cmdlet("Sync", "FlickrAlbumFromDirectory")]
+    public class SyncFlickrAlbumFromDirectory : FlickrCmdletsBase
     {
         [Parameter(Mandatory = false, Position = 0)]
         public string Path { get; set; }
 
-        public NewFlickrAlbumFromDirectory()
+        public SyncFlickrAlbumFromDirectory()
         {
-            this.AddCommand(new UpdateAlbumAndPushPhotos(this));
+            this.AddCommand(new FlickrAlbumFromDirectoryCommand(this));
         }
 
         protected override void ProcessRecord()

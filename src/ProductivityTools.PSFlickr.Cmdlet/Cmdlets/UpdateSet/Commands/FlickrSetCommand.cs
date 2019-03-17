@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace ProductivityTools.PSFlickr.Cmdlet.Cmdlets.UpdateSet.Commands
 {
-    public class UpdateAlbumsAndPushPhotos : PSCmdlet.PSCommandPT<SyncFickrSet>
+    public class FlickrSetCommand : PSCmdlet.PSCommandPT<SyncFickrSet>
     {
         protected override bool Condition => true;
 
-        public UpdateAlbumsAndPushPhotos(SyncFickrSet cmdlet) : base(cmdlet) { }
+        public FlickrSetCommand(SyncFickrSet cmdlet) : base(cmdlet) { }
 
         protected override void Invoke()
         {
