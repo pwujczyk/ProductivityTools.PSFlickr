@@ -16,7 +16,7 @@ namespace ProductivityTools.PSFlickr.Cmdlet.Cmdlets.UpdateSet
 
         public SyncFickrSet()
         {
-            this.AddCommand(new UpdateAlbumsAndPushPhotos(this));
+            this.AddCommand(new FlickrSetCommand(this));
         }
 
         protected override void ProcessRecord()

@@ -14,42 +14,30 @@ namespace ProductivityTools.PSFlickr.ApplicationClient
         protected CommonOperations commonOperations = new CommonOperations();
         string Cover = "_Cover";
 
-        //pw: split into files
+        public SyncOneDirectory(Action<string> writeVerbose)
+        {
+            this.WriteVerbose = writeVerbose;
+        }
+
         public void CreateAlbumAndPushPhotos(string absolutepath)
         {
             var directory = System.IO.Directory.CreateDirectory(absolutepath);
             string albumName = directory.Name;
-            FileInfo[] files = directory.GetFiles();
-
             var onlineAlbum = GetOrCreateAlbum(albumName);
+
+            ResettingMoreThanOneLocalPrimaryPhoto(directory);
+            UploadPrimaryPhotoIfExists(directory, onlineAlbum);
+            SetFirstFileAsCoverIfCoverDoesntExists(directory, onlineAlbum);
+            SetCoverPhotoOnDiskAsInOnlineAlbum(directory, onlineAlbum);
+
+            UploadFiles(directory, onlineAlbum);
+        }
+
+        private void SetCoverPhotoOnDiskAsInOnlineAlbum(DirectoryInfo directory, Album onlineAlbum)
+        {
             var photosInOnlineAlbum = manager.GetPhotos(onlineAlbum);
             var onlinePrimaryPhoto = PrimaryPhoto(photosInOnlineAlbum, onlineAlbum.PrimaryPhotoId);
-            var localPrimaryPhotos = files.Where(x => Path.GetFileNameWithoutExtension(x.FullName).EndsWith(Cover));
-            if (localPrimaryPhotos.Count() > 1)
-            {
-                ClearAllCoverPhotos(files);
-                files = directory.GetFiles();
-                localPrimaryPhotos = files.Where(x => Path.GetFileNameWithoutExtension(x.FullName).EndsWith(Cover));
-            }
-
-            var localPrimaryPhoto = localPrimaryPhotos.SingleOrDefault();
-            if (onlineAlbum.PrimaryPhotoId.Id == null && localPrimaryPhoto != null)
-            {
-                //updload local photo, cover will be set automatically as this is first photo
-                FlickrPhotoId onlinePhotoId = commonOperations.AddPhotoToAlbumId(localPrimaryPhotos.Single().FullName, onlineAlbum);
-                photosInOnlineAlbum = manager.GetPhotos(onlineAlbum);
-            }
-
-            if (onlineAlbum.PrimaryPhotoId.Id == null && localPrimaryPhoto == null)
-            {
-                var candidateForOnlinePrimaryPhoto = files.FirstOrDefault();
-                if (candidateForOnlinePrimaryPhoto != null)
-                {
-                    RenameFileToBeCover(candidateForOnlinePrimaryPhoto);
-                    files = directory.GetFiles();
-                }
-            }
-
+            FileInfo[] files = directory.GetFiles();
             if (onlineAlbum.PrimaryPhotoId.Id != null)
             {
                 var onlinePrimaryPhotoWithoutCover = onlinePrimaryPhoto.Title.Replace(Cover, string.Empty);
@@ -60,9 +48,53 @@ namespace ProductivityTools.PSFlickr.ApplicationClient
                     RenameFileToBeCover(diskPhotoToSetAsCover);
                 }
             }
+        }
 
+        private void SetFirstFileAsCoverIfCoverDoesntExists(DirectoryInfo directory, Album onlineAlbum)
+        {
+            var files = directory.GetFiles();
+            var localPrimaryPhotos = files.Where(x => Path.GetFileNameWithoutExtension(x.FullName).EndsWith(Cover));
+            var localPrimaryPhoto = localPrimaryPhotos.SingleOrDefault();
+            if (onlineAlbum.PrimaryPhotoId.Id == null && localPrimaryPhoto == null)
+            {
+                var candidateForOnlinePrimaryPhoto = files.FirstOrDefault();
+                if (candidateForOnlinePrimaryPhoto != null)
+                {
+                    RenameFileToBeCover(candidateForOnlinePrimaryPhoto);
+                    files = directory.GetFiles();
+                }
+            }
+        }
+
+        private void UploadPrimaryPhotoIfExists(DirectoryInfo directory,Album onlineAlbum)
+        {
+            var files = directory.GetFiles();
+            var localPrimaryPhotos = files.Where(x => Path.GetFileNameWithoutExtension(x.FullName).EndsWith(Cover));
+            var localPrimaryPhoto = localPrimaryPhotos.SingleOrDefault();
+            if (onlineAlbum.PrimaryPhotoId.Id == null && localPrimaryPhoto != null)
+            {
+                //updload local photo, cover will be set automatically as this is first photo
+                FlickrPhotoId onlinePhotoId = commonOperations.AddPhotoToAlbumId(localPrimaryPhotos.Single().FullName, onlineAlbum);
+            }
+        }
+
+        private void ResettingMoreThanOneLocalPrimaryPhoto(DirectoryInfo directory)
+        {
+            var files = directory.GetFiles();
+            var localPrimaryPhotos = files.Where(x => Path.GetFileNameWithoutExtension(x.FullName).EndsWith(Cover));
+            if (localPrimaryPhotos.Count() > 1)
+            {
+                ClearAllCoverPhotos(files);
+                files = directory.GetFiles();
+                localPrimaryPhotos = files.Where(x => Path.GetFileNameWithoutExtension(x.FullName).EndsWith(Cover));
+            }
+        }
+
+        private void UploadFiles(DirectoryInfo directory, Album onlineAlbum)
+        {
+            var files = directory.GetFiles();
+            var photosInOnlineAlbum = manager.GetPhotos(onlineAlbum);
             var allowedTypes = config.PhotoTypes.Split(' ', ',', ';').Select(x => x.ToLower());
-
             foreach (var file in files)
             {
                 if (allowedTypes.Contains(file.Extension.Trim('.').ToLower()))
@@ -73,13 +105,13 @@ namespace ProductivityTools.PSFlickr.ApplicationClient
                     var onlinePhoto = photosInOnlineAlbum.SingleOrDefault(x => x.Title == fileName);
                     if (onlinePhoto == null)
                     {
-                        WriteVerbose($"Pushing {file.FullName} to album {albumName}");
+                        WriteVerbose($"Pushing {file.FullName} to album {onlineAlbum.Name}");
                         FlickrPhotoId onlinePhotoId = commonOperations.AddPhotoToAlbumId(file.FullName, onlineAlbum);
 
                     }
                     else
                     {
-                        WriteVerbose($"Photo {fileName} already exists in {albumName}");
+                        WriteVerbose($"Photo {fileName} already exists in {onlineAlbum.Name}");
                     }
                 }
                 else
@@ -97,12 +129,12 @@ namespace ProductivityTools.PSFlickr.ApplicationClient
 
         private Album GetOrCreateAlbum(string name)
         {
-            Album albumId = commonOperations.GetAlbumByName(name);
-            if (albumId == null)
+            Album album = commonOperations.GetAlbumByName(name);
+            if (album == null)
             {
-                albumId = commonOperations.CreateAlbumInternal(name);
+                album = commonOperations.CreateAlbumInternal(name);
             }
-            return albumId;
+            return album;
         }
 
         private void ClearAllCoverPhotos(FileInfo[] files)

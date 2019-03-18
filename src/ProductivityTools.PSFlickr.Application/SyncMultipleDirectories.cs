@@ -22,7 +22,7 @@ namespace ProductivityTools.PSFlickr.ApplicationClient
         {
             var mainDirectory = System.IO.Directory.CreateDirectory(directoryPath);
             DirectoryInfo[] directories = mainDirectory.GetDirectories();
-            SyncOneDirectory syncOneDirectory = new SyncOneDirectory();
+            SyncOneDirectory syncOneDirectory = new SyncOneDirectory(this.WriteVerbose);
             foreach (var direcotry in directories)
             {
                 syncOneDirectory.CreateAlbumAndPushPhotos(direcotry.FullName);

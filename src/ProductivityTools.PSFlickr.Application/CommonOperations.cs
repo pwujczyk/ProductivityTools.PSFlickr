@@ -119,7 +119,6 @@ namespace ProductivityTools.PSFlickr.ApplicationClient
             return x.AlbumId.Id;
         }
 
-        //pw: remove it
         public Album CreateAlbumInternal(string name)
         {
             WriteVerbose($"Creating album {name}");

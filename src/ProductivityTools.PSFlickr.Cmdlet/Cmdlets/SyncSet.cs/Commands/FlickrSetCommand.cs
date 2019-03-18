@@ -16,8 +16,8 @@ namespace ProductivityTools.PSFlickr.Cmdlet.Cmdlets.UpdateSet.Commands
 
         protected override void Invoke()
         {
-            FlickrOperations flickrOperations = FlickrOperationsFactory.GetFlickrOperations(WriteOutput);
-            SyncMultipleDirectories flickrSync = new SyncMultipleDirectories(WriteOutput);
+            //FlickrOperations flickrOperations = FlickrOperationsFactory.GetFlickrOperations(this.Cmdlet.WriteVerbose);
+            SyncMultipleDirectories flickrSync = new SyncMultipleDirectories(this.Cmdlet.WriteVerbose);
             var absolutepath = this.Cmdlet.GetPath(this.Cmdlet.Directory ?? string.Empty);
             flickrSync.CreateAlbumsFromDirectories(absolutepath);
         }
