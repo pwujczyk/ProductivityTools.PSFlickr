@@ -48,10 +48,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ConfigurationExample.xml" />
-    <Content Include="Configuration.xml">
+    <Content Include="ConfigurationLocal.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Configuration.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

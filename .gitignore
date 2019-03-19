@@ -8,4 +8,4 @@ artifacts/
 debug/
 out/
 .vs
-src/Common/ProductivityTools.PSFlickr.Configuration/Configuration.xml
+src/ProductivityTools.PSFlickr.Configuration/ConfigurationLocal.xml
