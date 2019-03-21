@@ -2,10 +2,11 @@
 <Configuration>
   <Source Type="File"></Source>
   <ApplicationConfiguration Name="PSFlickr">
-    <Config Key="ApiKey"></Config>
-    <Config Key="SharedSecret"></Config>
+    <Config Key="ApiKey">b1714ae904a921ba7349c787b88f4bf7</Config>
+    <Config Key="SharedSecret">176531a9c388f832</Config>
     <Config Key="AccessToken" Category=""></Config>
     <Config Key="AccessTokenSecret" Category=""></Config>
-    <Config key="MaintananceAlbumName">.</Config>
+    <Config Key="PhotoTypes" Category="">jpg</Config>
+    <Config Key="MaintananceAlbumName" Category="">MaintananceAlbum</Config>
   </ApplicationConfiguration>
 </Configuration>

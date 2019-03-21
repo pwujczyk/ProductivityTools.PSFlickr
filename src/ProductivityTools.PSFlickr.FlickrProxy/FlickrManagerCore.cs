@@ -45,7 +45,7 @@ namespace ProductivityTools.PSFlickr.FlickrProxy
 
         public string GetAuthorizationUrl()
         {
-            var requestToken = Flickr.OAuthGetRequestToken("oob");
+            requestToken = Flickr.OAuthGetRequestToken("oob");
             string url = Flickr.OAuthCalculateAuthorizationUrl(requestToken.Token, AuthLevel.Delete);
             return url;
         }

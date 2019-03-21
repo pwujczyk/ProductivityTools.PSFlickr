@@ -35,9 +35,7 @@ namespace ProductivityTools.PSFlickr.Cmdlet.Cmdlet
                 FlickrOperation.GetAndSaveAccessToken(token);
             }
             base.ProcessRecord();
-            Console.Write("xxxx");
-            Console.Read();
-            Console.Write("xxxx");
+            Console.Write("Finished");
         }
     }
 }

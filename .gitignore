@@ -9,3 +9,4 @@ debug/
 out/
 .vs
 src/ProductivityTools.PSFlickr.Configuration/ConfigurationLocal.xml
+tools/

@@ -34,7 +34,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Description, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Description.1.0.0\lib\Description.dll</HintPath>
+      <HintPath>..\..\packages\Description.1.0.0\lib\Description.dll</HintPath>
     </Reference>
     <Reference Include="ProductivityTools.PSCmdlet, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\ProductivityTools.PSCmdlet.0.0.6\lib\v4.6.1\ProductivityTools.PSCmdlet.dll</HintPath>
@@ -70,13 +70,13 @@
     <Compile Include="SingleCmdlets\GetFlickrAlbums.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\ProductivityTools.PSFlickr.Application\ProductivityTools.PSFlickr.Application.csproj">
       <Project>{3eebd62c-e69a-4e8e-92c0-9cd568a12c60}</Project>
       <Name>ProductivityTools.PSFlickr.Application</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
