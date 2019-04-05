@@ -126,5 +126,25 @@ namespace ProductivityTools.PSFlickr.ApplicationClient
             return x;
         }
 
+        public void SetAlbumPermissions(string albumName, bool @public, bool family, bool friends)
+        {
+            var album = GetAlbumByName(albumName);
+            var photos = manager.GetPhotos(album);
+            foreach (var photo in photos)
+            {
+                WriteVerbose($"Set permission for {photo.PhotoId}");
+                manager.SetPermissions(photo, @public, family, friends);
+            }
+        }
+
+        public void SetPhotosPermissions(bool @public, bool family, bool friends)
+        {
+            var albums = this.manager.GetAlbums();
+            foreach (var album in albums)
+            {
+                WriteVerbose($"Set permission for {album.Name}");
+                SetAlbumPermissions(album.Name, @public, family, friends);
+            }
+        }
     }
 }

@@ -49,6 +49,7 @@ Task("Module")
     .IsDependentOn("Build")
     .Does(() =>
 {
+	CleanDirectory("./out/Module/");
 	CopyDirectory("./out/bin/Debug/", "./out/Module/");
 });
 

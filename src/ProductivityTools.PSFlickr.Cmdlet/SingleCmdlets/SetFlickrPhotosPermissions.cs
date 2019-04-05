@@ -9,16 +9,21 @@ using System.Threading.Tasks;
 
 namespace ProductivityTools.PSFlickr.SingleCmdlets
 {
-
-    [Cmdlet(VerbsCommon.New, "FlickrAlbum")]
-    public class NewFlickrAlbum : System.Management.Automation.PSCmdlet
+    [Cmdlet(VerbsCommon.Set, "FlickrPhotoPermissions")]
+    public class SetFlickrPhotosPermissions : System.Management.Automation.PSCmdlet
     {
+
         [Parameter(Position = 0)]
-        public string Name { get; set; }
+        public bool Piblic { get; set; }
+
+        [Parameter(Position = 1)]
+        public bool Friends { get; set; }
+
+        [Parameter(Position = 2)]
+        public bool Family { get; set; }
 
         protected override void ProcessRecord()
         {
-            FlickrOperations autentication = FlickrOperationsFactory.GetFlickrOperations();
             CommonOperations commonOperations = new CommonOperations();
             var albums = commonOperations.CreateAlbum(this.Name);
             WriteObject(albums);

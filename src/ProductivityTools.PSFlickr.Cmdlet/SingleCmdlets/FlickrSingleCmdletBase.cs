@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProductivityTools.PSFlickr.Cmdlet.SingleCmdlets
+namespace ProductivityTools.PSFlickr.SingleCmdlets
 {
     public abstract class FlickrSingleCmdletBase: System.Management.Automation.PSCmdlet
     {

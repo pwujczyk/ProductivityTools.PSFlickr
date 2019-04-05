@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProductivityTools.PSFlickr.Cmdlet.Cmdlets.UpdateSet.Commands
+namespace ProductivityTools.PSFlickr.Cmdlets.UpdateSet.Commands
 {
     public class FlickrSetCommand : PSCmdlet.PSCommandPT<SyncFickrSet>
     {

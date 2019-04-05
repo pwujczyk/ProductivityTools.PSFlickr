@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProductivityTools.PSFlickr.Cmdlet.Cmdlets.AddPhoto.Commands
+namespace ProductivityTools.PSFlickr.Cmdlets.AddPhoto.Commands
 {
     class AddSinglePhoto : PSCmdlet.PSCommandPT<AddFlickrPhoto>
     {

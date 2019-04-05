@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProductivityTools.PSFlickr.Cmdlet.Cmdlets.NewAlbumFromDirectory.Commands
+namespace ProductivityTools.PSFlickr.Cmdlets.NewAlbumFromDirectory.Commands
 {
     public class FlickrAlbumFromDirectoryCommand : PSCmdlet.PSCommandPT<SyncFlickrAlbumFromDirectory>
     {

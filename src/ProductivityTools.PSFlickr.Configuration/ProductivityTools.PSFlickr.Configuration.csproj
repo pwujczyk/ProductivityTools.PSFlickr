@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ProductivityTools.MasterConfiguration, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ProductivityTools.MasterConfiguration.1.0.1\lib\v4.6.1\ProductivityTools.MasterConfiguration.dll</HintPath>
+      <HintPath>..\..\packages\ProductivityTools.MasterConfiguration.1.0.2\lib\v4.6.1\ProductivityTools.MasterConfiguration.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -49,7 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ConfigurationLocal.xml" />
-    <Content Include="Configuration.xml">
+    <Content Include="MasterConfiguration.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

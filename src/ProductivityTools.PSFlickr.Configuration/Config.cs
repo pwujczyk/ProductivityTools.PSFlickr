@@ -14,8 +14,8 @@ namespace PSFlickr.Configuration
         {
             conf = new ProductivityTools.MasterConfiguration.MConfiguration();
             conf.SetApplicationName("PSFlickr");
-            conf.SetConfigurationFileName("Configuration.xml");
-            conf.SetConfigFileConfiguration(ProductivityTools.MasterConfiguration.ConfigSourceLocation.CallingAssemblyLocation);
+            conf.SetConfigurationFileName("MasterConfiguration.xml");
+            conf.SetConfigurationFileDirectory(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location));
         }
 
         private string GetValue(string s)

@@ -1,4 +1,4 @@
-﻿using ProductivityTools.PSFlickr.Cmdlet.Cmdlets.UpdateSet.Commands;
+﻿using ProductivityTools.PSFlickr.Cmdlets.UpdateSet.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Management.Automation;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProductivityTools.PSFlickr.Cmdlet.Cmdlets.UpdateSet
+namespace ProductivityTools.PSFlickr.Cmdlets.UpdateSet
 {
     [Cmdlet("Sync", "FlickrSet")]
     public class SyncFickrSet : FlickrCmdletsBase

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProductivityTools.PSFlickr.Cmdlet
+namespace ProductivityTools.PSFlickr
 {
     public static class FlickrOperationsFactory
     {

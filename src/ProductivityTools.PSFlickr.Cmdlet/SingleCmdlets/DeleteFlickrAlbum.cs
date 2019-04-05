@@ -5,7 +5,7 @@ using System.Management.Automation;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProductivityTools.PSFlickr.Cmdlet.SingleCmdlets
+namespace ProductivityTools.PSFlickr.SingleCmdlets
 {
     [Cmdlet(VerbsCommon.Remove, "FlickrAlbum")]
     public class DeleteFlickrAlbum : FlickrSingleCmdletBase
