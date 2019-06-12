@@ -14,7 +14,7 @@ namespace ProductivityTools.PSFlickr.SingleCmdlets
     {
 
         [Parameter(Position = 0)]
-        public bool Piblic { get; set; }
+        public bool Public { get; set; }
 
         [Parameter(Position = 1)]
         public bool Friends { get; set; }
@@ -25,8 +25,7 @@ namespace ProductivityTools.PSFlickr.SingleCmdlets
         protected override void ProcessRecord()
         {
             CommonOperations commonOperations = new CommonOperations();
-            var albums = commonOperations.CreateAlbum(this.Name);
-            WriteObject(albums);
+            commonOperations.SetPhotosPermissions(Public, Family, Friends);
         }
     }
 }

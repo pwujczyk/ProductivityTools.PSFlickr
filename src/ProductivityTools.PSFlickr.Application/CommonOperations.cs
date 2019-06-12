@@ -133,7 +133,7 @@ namespace ProductivityTools.PSFlickr.ApplicationClient
             foreach (var photo in photos)
             {
                 WriteVerbose($"Set permission for {photo.PhotoId}");
-                manager.SetPermissions(photo, @public, family, friends);
+                manager.SetPermissions(photo, @public, friends, family);
             }
         }
 

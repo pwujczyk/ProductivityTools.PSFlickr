@@ -71,9 +71,9 @@ namespace ProductivityTools.PSFlickr.FlickrProxy
             Flickr.PhotosDelete(photo.PhotoId.Id);
         }
 
-        public void SetPermissions(FlickrPhoto photo,bool @public, bool friends, bool family,)
+        public void SetPermissions(FlickrPhoto photo,bool @public, bool friends, bool family)
         {
-            Flickr.PhotosSetPerms(photo.PhotoId.Id,@public,friends,family)
+            Flickr.PhotosSetPerms(photo.PhotoId.Id, @public, friends, family, PermissionComment.Nobody, PermissionAddMeta.Owner);
         }
 
         //public List<string> GetPhotosTitleFromAlbum(string albumId)

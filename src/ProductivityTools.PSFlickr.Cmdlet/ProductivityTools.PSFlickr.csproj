@@ -54,10 +54,10 @@
     <Compile Include="Cmdlets\AddPhoto\Commands\AddPhotoToAlbum.cs" />
     <Compile Include="Cmdlets\AddPhoto\Commands\AddSinglePhoto.cs" />
     <Compile Include="Cmdlets\FlickrCmdletsBase.cs" />
-    <Compile Include="Cmdlets\SyncAlbumFromDirectory.cs\Commands\FlickrAlbumFromDirectoryCommand.cs" />
-    <Compile Include="Cmdlets\SyncAlbumFromDirectory.cs\SyncFlickrAlbumFromDirectory.cs" />
-    <Compile Include="Cmdlets\SyncSet.cs\Commands\FlickrSetCommand.cs" />
-    <Compile Include="Cmdlets\SyncSet.cs\SyncFlickrSet.cs" />
+    <Compile Include="Cmdlets\SyncAlbumFromDirectory\Commands\FlickrAlbumFromDirectoryCommand.cs" />
+    <Compile Include="Cmdlets\SyncAlbumFromDirectory\SyncFlickrAlbumFromDirectory.cs" />
+    <Compile Include="Cmdlets\SyncSet\Commands\FlickrSetCommand.cs" />
+    <Compile Include="Cmdlets\SyncSet\SyncFlickrSet.cs" />
     <Compile Include="FileHelper.cs" />
     <Compile Include="FlickrOperationsFactory.cs" />
     <Compile Include="SingleCmdlets\AuthenticateFlickr.cs" />
@@ -68,6 +68,8 @@
     <Compile Include="SingleCmdlets\FlickrSingleCmdletBase.cs" />
     <Compile Include="SingleCmdlets\NewFlickrAlbum.cs" />
     <Compile Include="SingleCmdlets\GetFlickrAlbums.cs" />
+    <Compile Include="SingleCmdlets\SetFlickrAlbumPermissions.cs" />
+    <Compile Include="SingleCmdlets\SetFlickrPhotosPermissions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ProductivityTools.PSFlickr.Application\ProductivityTools.PSFlickr.Application.csproj">
@@ -80,6 +82,9 @@
     <None Include="ProductivityTools.PSFlickr.psd1">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

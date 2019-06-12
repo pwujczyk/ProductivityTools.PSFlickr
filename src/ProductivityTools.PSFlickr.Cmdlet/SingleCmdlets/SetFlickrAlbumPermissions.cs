@@ -28,8 +28,7 @@ namespace ProductivityTools.PSFlickr.SingleCmdlets
         {
             FlickrOperations autentication = FlickrOperationsFactory.GetFlickrOperations();
             CommonOperations commonOperations = new CommonOperations();
-            var albums = commonOperations.SetAlbumPermissions(this.Name,Public, Family,Friends);
-            WriteObject(albums);
+            commonOperations.SetAlbumPermissions(this.Name,Public, Family,Friends);
         }
     }
 }
