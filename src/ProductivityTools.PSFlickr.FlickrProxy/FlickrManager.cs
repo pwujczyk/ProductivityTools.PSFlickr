@@ -32,11 +32,13 @@ namespace ProductivityTools.PSFlickr.FlickrProxy
             return albumlist;
         }
 
-        //not used as removing all photos in ablum removes automatically album
-        //public void DeleteAlbum(Album album)
-        //{
-        //    Flickr.PhotosetsDelete(album.AlbumId.Id);
-        //}
+        public void DeleteAlbum(Album album)
+        {
+            if (album != null)
+            {
+                Flickr.PhotosetsDelete(album.AlbumId.Id);
+            }
+        }
 
         public void SetCoverPhoto(Album albumId, FlickrPhotoId photoId)
         {

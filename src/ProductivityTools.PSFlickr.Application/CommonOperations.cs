@@ -101,6 +101,7 @@ namespace ProductivityTools.PSFlickr.ApplicationClient
         internal Album GetAlbumByName(string albumName)
         {
             var albums = this.manager.GetAlbums();
+            WriteVerbose($"Album {albumName} found");
             var album = albums.SingleOrDefault(x => x.Name == albumName);
             if (album == null) return null;
             return album;

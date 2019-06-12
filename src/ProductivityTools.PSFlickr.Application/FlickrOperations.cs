@@ -95,9 +95,12 @@ namespace ProductivityTools.PSFlickr.Application
                 var photos = manager.GetPhotos(album);
                 DeletePhotos(photos, album);
             }
-            WriteVerbose("Delete album");
-            //not needed album without photos is deleted automatically
-            //manager.DeleteAlbum(album);
+            else
+            {
+                WriteVerbose("Delete album");
+                //not needed album without photos is deleted automatically
+                manager.DeleteAlbum(album);
+            }
         }
 
         public void ClearFlickr()
