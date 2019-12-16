@@ -10,6 +10,9 @@ namespace ProductivityTools.PSFlickr.ApplicationClient
 {
     public class CommonOperations : BaseOperations
     {
+
+        public CommonOperations(Action<string> writeVerbose) : base(writeVerbose) { }
+
         internal FlickrPhotoId AddPhotoToAlbumId(string path, Album album)
         {
             var photoId = manager.AddPhoto(path);
@@ -129,6 +132,7 @@ namespace ProductivityTools.PSFlickr.ApplicationClient
 
         public void SetAlbumPermissions(string albumName, bool @public, bool family, bool friends)
         {
+            WriteVerbose($"Set permission for album {albumName}");
             var album = GetAlbumByName(albumName);
             var photos = manager.GetPhotos(album);
             foreach (var photo in photos)

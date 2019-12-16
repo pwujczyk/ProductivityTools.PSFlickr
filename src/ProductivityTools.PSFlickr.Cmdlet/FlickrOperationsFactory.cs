@@ -9,10 +9,10 @@ namespace ProductivityTools.PSFlickr
 {
     public static class FlickrOperationsFactory
     {
-        public static FlickrOperations GetFlickrOperations()
-        {
-            return new FlickrOperations();
-        }
+        //public static FlickrOperations GetFlickrOperations()
+        //{
+        //    return new FlickrOperations();
+        //}
 
         public static FlickrOperations GetFlickrOperations(Action<string> writeVerbose)
         {

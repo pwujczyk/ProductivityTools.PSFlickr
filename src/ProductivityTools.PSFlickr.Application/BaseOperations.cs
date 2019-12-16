@@ -34,6 +34,11 @@ namespace ProductivityTools.PSFlickr.ApplicationClient
             }
         }
 
+        public BaseOperations(Action<string> writeVerbose)
+        {
+            this.WriteVerbose = writeVerbose;
+        }
+
 
     }
 }

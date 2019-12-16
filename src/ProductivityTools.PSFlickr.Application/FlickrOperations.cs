@@ -14,16 +14,17 @@ namespace ProductivityTools.PSFlickr.Application
 {
     public class FlickrOperations : BaseOperations
     {
-        protected CommonOperations commonOperations = new CommonOperations();
+        protected CommonOperations commonOperations;
 
-        public FlickrOperations()
+        //public FlickrOperations()
+        //{
+
+        //}
+
+        public FlickrOperations(Action<string> writeVerbose) : base(writeVerbose)
         {
-
-        }
-
-        public FlickrOperations(Action<string> writeVerbose)
-        {
-            this.WriteVerbose = writeVerbose;
+            // this.WriteVerbose = writeVerbose;
+            this.commonOperations = new CommonOperations(this.WriteVerbose);
         }
 
         public void OpenAutorizeAddress()
@@ -146,7 +147,7 @@ namespace ProductivityTools.PSFlickr.Application
                 manager.RemovePhoto(item);
             }
         }
-       
+
 
         public void MoveSinglePhotosToAlbum(string name)
         {
@@ -159,10 +160,10 @@ namespace ProductivityTools.PSFlickr.Application
             }
         }
 
-   
 
 
-   
+
+
         //private void SetCoverPhoto(Album album, FlickrPhoto photoId, string path)
         //{
         //    var fileName = System.IO.Path.GetFileNameWithoutExtension(path);
@@ -172,6 +173,6 @@ namespace ProductivityTools.PSFlickr.Application
         //    }
         //}
 
-      
+
     }
 }

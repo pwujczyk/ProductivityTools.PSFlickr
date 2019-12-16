@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace ProductivityTools.PSFlickr.ApplicationClient
 {
-    public class SyncOneDirectory: BaseOperations
+    public class SyncOneDirectory : BaseOperations
     {
-        protected CommonOperations commonOperations = new CommonOperations();
+        protected CommonOperations commonOperations;
         string Cover = "_Cover";
 
-        public SyncOneDirectory(Action<string> writeVerbose)
+        public SyncOneDirectory(Action<string> writeVerbose) : base(writeVerbose)
         {
-            this.WriteVerbose = writeVerbose;
+            this.commonOperations = new CommonOperations(this.WriteVerbose);
         }
 
         public void CreateAlbumAndPushPhotos(string absolutepath)
@@ -66,7 +66,7 @@ namespace ProductivityTools.PSFlickr.ApplicationClient
             }
         }
 
-        private void UploadPrimaryPhotoIfExists(DirectoryInfo directory,Album onlineAlbum)
+        private void UploadPrimaryPhotoIfExists(DirectoryInfo directory, Album onlineAlbum)
         {
             var files = directory.GetFiles();
             var localPrimaryPhotos = files.Where(x => Path.GetFileNameWithoutExtension(x.FullName).EndsWith(Cover));

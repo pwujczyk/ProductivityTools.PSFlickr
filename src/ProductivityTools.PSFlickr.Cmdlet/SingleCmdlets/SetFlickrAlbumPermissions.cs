@@ -26,8 +26,8 @@ namespace ProductivityTools.PSFlickr.SingleCmdlets
 
         protected override void ProcessRecord()
         {
-            FlickrOperations autentication = FlickrOperationsFactory.GetFlickrOperations();
-            CommonOperations commonOperations = new CommonOperations();
+            FlickrOperations autentication = FlickrOperationsFactory.GetFlickrOperations(WriteVerbose);
+            CommonOperations commonOperations = new CommonOperations(WriteVerbose);
             commonOperations.SetAlbumPermissions(this.Name,Public, Family,Friends);
         }
     }

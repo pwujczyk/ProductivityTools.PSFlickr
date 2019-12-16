@@ -14,8 +14,8 @@ namespace ProductivityTools.PSFlickr.ApplicationClient
 {
     public class SyncMultipleDirectories : BaseOperations
     {
-      //  FlickrOperations FlickrOperations;
-        protected CommonOperations commonOperations = new CommonOperations();
+        //  FlickrOperations FlickrOperations;
+        protected CommonOperations commonOperations;
  
 
         public void CreateAlbumsFromDirectories(string directoryPath)
@@ -29,10 +29,10 @@ namespace ProductivityTools.PSFlickr.ApplicationClient
             }
         }
 
-        public SyncMultipleDirectories(Action<string> writeVerbose)
+        public SyncMultipleDirectories(Action<string> writeVerbose) : base(writeVerbose)
         {
-            this.WriteVerbose = writeVerbose;
-          //  this.FlickrOperations = flickrOperations;
+            this.commonOperations = new CommonOperations(this.WriteVerbose);
+            //  this.FlickrOperations = flickrOperations;
         }
         
       

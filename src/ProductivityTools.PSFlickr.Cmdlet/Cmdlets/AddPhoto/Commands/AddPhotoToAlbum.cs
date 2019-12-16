@@ -19,7 +19,7 @@ namespace ProductivityTools.PSFlickr.Cmdlets.AddPhoto.Commands
         protected override void Invoke()
         {
             var absolutepath = this.Cmdlet.GetPath(this.Cmdlet.Path);
-            FlickrOperations autentication = FlickrOperationsFactory.GetFlickrOperations();
+            FlickrOperations autentication = FlickrOperationsFactory.GetFlickrOperations(this.Cmdlet.WriteVerbose);
             var photoId = autentication.AddPhotoToAlbumName(absolutepath,this.Cmdlet.Album);
             WriteOutput(photoId);
         }
