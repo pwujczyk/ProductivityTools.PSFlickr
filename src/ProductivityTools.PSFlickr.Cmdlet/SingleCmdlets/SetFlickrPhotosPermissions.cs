@@ -24,7 +24,7 @@ namespace ProductivityTools.PSFlickr.SingleCmdlets
 
         protected override void ProcessRecord()
         {
-            CommonOperations commonOperations = new CommonOperations();
+            CommonOperations commonOperations = new CommonOperations(WriteVerbose);
             commonOperations.SetPhotosPermissions(Public, Family, Friends);
         }
     }
