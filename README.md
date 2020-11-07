@@ -14,9 +14,9 @@
 
 Module allows to perform basic operations on the Flickr account. Main feature is to synchronize whole photo directories with online albums.
 
-<!--More-->
+<!--more-->
 
-# **Project was dropped when Flickr decided to limit free account to 1000 pictures for account.**
+## **Project was dropped when Flickr decided to limit free account to 1000 pictures for account.**
 
 Current state: module can authenticate, create directories, push pictures to albums.
 
@@ -41,6 +41,7 @@ After authentication you can start using module. It is important to know that Fl
 
 Additionally Flickr Album cannot exists without any picture. If you will remove all pictures from album album is deleted automatically. That is why when creating album through API you need to add at least one photo. In module we I am creating Maintenance Album which stores one picture which is added to newly created album. After you will add picture to this album. Maintenance picture is removed (from this new album)
 
+<!--og-image-->
 ![Authenticate](Images/NewAlbum.png)
 
 - Authenticate-Flickr – Authenticate module to your account. Saves key to MasterConfiguration file placed in the module directory.
