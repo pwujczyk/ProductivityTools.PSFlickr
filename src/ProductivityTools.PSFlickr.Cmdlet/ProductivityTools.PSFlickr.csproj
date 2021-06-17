@@ -79,7 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="ProductivityTools.PSFlickr.psd1">
+    <None Include="ProductivityTools.Flickr.psd1">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
